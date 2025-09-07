@@ -1,0 +1,40 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#0F0F0F"/>
+  <rect x="20" y="20" width="360" height="260" rx="8" fill="#1A1A1A"/>
+  
+  <!-- Browser chrome -->
+  <rect x="40" y="40" width="320" height="30" rx="4" fill="#2A2A2A"/>
+  <circle cx="55" cy="55" r="4" fill="#EF4444"/>
+  <circle cx="70" cy="55" r="4" fill="#F59E0B"/>
+  <circle cx="85" cy="55" r="4" fill="#10B981"/>
+  <rect x="110" y="50" width="200" height="10" rx="2" fill="#374151"/>
+  
+  <!-- Portfolio content -->
+  <rect x="40" y="80" width="320" height="50" rx="4" fill="#123458"/>
+  <rect x="60" y="95" width="80" height="20" rx="2" fill="#FFFFFF"/>
+  <rect x="260" y="95" width="80" height="20" rx="2" fill="#FFFFFF"/>
+  
+  <!-- Project cards -->
+  <rect x="60" y="150" width="90" height="80" rx="4" fill="#1F2937"/>
+  <rect x="155" y="150" width="90" height="80" rx="4" fill="#1F2937"/>
+  <rect x="250" y="150" width="90" height="80" rx="4" fill="#1F2937"/>
+  
+  <!-- Card content -->
+  <rect x="70" y="160" width="70" height="25" rx="2" fill="#374151"/>
+  <rect x="70" y="195" width="50" height="8" rx="1" fill="#6B7280"/>
+  <rect x="70" y="210" width="40" height="8" rx="1" fill="#6B7280"/>
+  
+  <rect x="165" y="160" width="70" height="25" rx="2" fill="#374151"/>
+  <rect x="165" y="195" width="50" height="8" rx="1" fill="#6B7280"/>
+  <rect x="165" y="210" width="40" height="8" rx="1" fill="#6B7280"/>
+  
+  <rect x="260" y="160" width="70" height="25" rx="2" fill="#374151"/>
+  <rect x="260" y="195" width="50" height="8" rx="1" fill="#6B7280"/>
+  <rect x="260" y="210" width="40" height="8" rx="1" fill="#6B7280"/>
+  
+  <!-- Footer -->
+  <rect x="40" y="250" width="320" height="20" rx="2" fill="#123458"/>
+  
+  <text x="200" y="15" text-anchor="middle" fill="#F3F4F6" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Portfolio Website</text>
+  <text x="200" y="290" text-anchor="middle" fill="#9CA3AF" font-family="Arial, sans-serif" font-size="10">Responsive • Modern • Interactive</text>
+</svg>
