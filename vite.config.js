@@ -5,6 +5,7 @@ import { resolve } from 'path'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  base: process.env.NODE_ENV === 'production' ? '/abriel-porto/' : '/',
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src')
@@ -12,5 +13,9 @@ export default defineConfig({
   },
   server: {
     allowedHosts: ['f7536019c2d8.ngrok-free.app']
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets'
   }
 })
