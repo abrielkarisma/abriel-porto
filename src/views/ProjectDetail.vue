@@ -388,7 +388,7 @@ export default {
                     ],
                     tags: ['Vue.js', 'Javascript', 'Tailwind CSS'],
                     image: 'porto.svg',
-                    githubUrl: 'https://github.com/abrielkarisma/portofolio_abriel',
+                    githubUrl: 'https://github.com/abrielkarisma/abriel-porto',
                     techStack: [
                         { name: 'Vue.js', icon: 'js.png', purpose: 'Progressive JavaScript framework for UI development' },
                         { name: 'JavaScript', icon: 'js.png', purpose: 'Core programming language for interactivity' },
