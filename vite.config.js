@@ -5,7 +5,6 @@ import { resolve } from 'path'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  base: '/abriel-porto/',
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src')
