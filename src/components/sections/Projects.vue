@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       inView: false,
+      isMobile: false,
       _stackTransforms: [],
       rfcImg,
       projects: [
@@ -51,34 +52,53 @@ export default {
     }
   },
   mounted() {
+    // Detect mobile device
+    this.isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+
     this._io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          this.playStackToGrid()
-          this.inView = true
+          // Disable complex animations on mobile
+          if (this.isMobile) {
+            this.inView = true
+          } else {
+            this.playStackToGrid()
+            this.inView = true
+          }
         } else {
-          this.resetToStack()
-          this.inView = false
+          if (this.isMobile) {
+            this.inView = false
+          } else {
+            this.resetToStack()
+            this.inView = false
+          }
         }
       })
     }, { threshold: 0.12 })
+
     if (this.$refs.projectsSection) this._io.observe(this.$refs.projectsSection)
-    this.computeStackTransforms()
-    this._onResize = () => this.computeStackTransforms()
-    window.addEventListener('resize', this._onResize)
-    if (window.visualViewport) {
-      this._vv = window.visualViewport
-      this._onVVResize = () => this.computeStackTransforms()
-      this._vv.addEventListener('resize', this._onVVResize)
-      this._vv.addEventListener('scroll', this._onVVResize)
+
+    // Only enable complex animations on desktop
+    if (!this.isMobile) {
+      this.computeStackTransforms()
+      this._onResize = this.debounce(() => this.computeStackTransforms(), 100)
+      window.addEventListener('resize', this._onResize)
+      if (window.visualViewport) {
+        this._vv = window.visualViewport
+        this._onVVResize = this.debounce(() => this.computeStackTransforms(), 100)
+        this._vv.addEventListener('resize', this._onVVResize)
+        this._vv.addEventListener('scroll', this._onVVResize)
+      }
     }
   },
   beforeUnmount() {
     if (this._io) this._io.disconnect()
-    window.removeEventListener('resize', this._onResize)
-    if (this._vv && this._onVVResize) {
-      this._vv.removeEventListener('resize', this._onVVResize)
-      this._vv.removeEventListener('scroll', this._onVVResize)
+    if (!this.isMobile) {
+      window.removeEventListener('resize', this._onResize)
+      if (this._vv && this._onVVResize) {
+        this._vv.removeEventListener('resize', this._onVVResize)
+        this._vv.removeEventListener('scroll', this._onVVResize)
+      }
     }
   },
   methods: {
@@ -90,6 +110,9 @@ export default {
       }
     },
     computeStackTransforms() {
+      // Skip on mobile
+      if (this.isMobile) return
+
       const grid = this.$refs.grid
       if (!grid) return
       const gridRect = grid.getBoundingClientRect()
@@ -108,6 +131,9 @@ export default {
       this.applyStackTransformsImmediate()
     },
     applyStackTransformsImmediate() {
+      // Skip on mobile
+      if (this.isMobile) return
+
       const grid = this.$refs.grid
       if (!grid) return
       const cards = Array.from(grid.querySelectorAll('.project-card'))
@@ -121,6 +147,9 @@ export default {
       void grid.offsetWidth
     },
     playStackToGrid() {
+      // Skip on mobile
+      if (this.isMobile) return
+
       const grid = this.$refs.grid
       if (!grid) return
       const cards = Array.from(grid.querySelectorAll('.project-card'))
@@ -154,6 +183,9 @@ export default {
       })
     },
     resetToStack() {
+      // Skip on mobile
+      if (this.isMobile) return
+
       const grid = this.$refs.grid
       if (!grid) return
       const cards = Array.from(grid.querySelectorAll('.project-card'))
@@ -167,6 +199,17 @@ export default {
           card.style.zIndex = 100 + i
         })
       })
+    },
+    debounce(func, wait) {
+      let timeout
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout)
+          func(...args)
+        }
+        clearTimeout(timeout)
+        timeout = setTimeout(later, wait)
+      }
     }
   }
 }
@@ -177,6 +220,8 @@ export default {
   background: #ffffff;
   position: relative;
   overflow: hidden;
+  /* Optimasi performa */
+  contain: layout style paint;
 }
 
 .section-content {
@@ -259,6 +304,8 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
+  /* Optimasi untuk mengurangi layout thrashing */
+  contain: layout;
 }
 
 .project-card {
@@ -268,6 +315,10 @@ export default {
   border: 1px solid rgba(156, 163, 175, 0.2);
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+  /* Optimasi untuk mobile */
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .project-card:hover {
@@ -412,6 +463,36 @@ export default {
     flex-direction: column;
     gap: 0.5rem;
   }
+
+  /* Disable complex animations on mobile */
+  .project-card {
+    transform: none !important;
+    transition: opacity 0.3s ease, box-shadow 0.3s ease !important;
+    will-change: auto;
+  }
+
+  .project-card:hover {
+    transform: none !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Simplified reveal animation for mobile */
+  .projects-grid .project-card {
+    transform: translateY(20px) !important;
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease !important;
+  }
+
+  .section-content.revealed .projects-grid .project-card {
+    transform: translateY(0) !important;
+    opacity: 1;
+  }
+
+  /* Reduce backdrop-filter on mobile for better performance */
+  .project-card {
+    backdrop-filter: none;
+    background: rgba(31, 41, 55, 0.95);
+  }
 }
 
 @media (max-width: 480px) {
@@ -425,6 +506,35 @@ export default {
 
   .project-info {
     padding: 1rem;
+  }
+
+  /* Further optimizations for very small screens */
+  .project-card {
+    background: rgba(31, 41, 55, 1);
+  }
+
+  .project-image {
+    height: 180px;
+  }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+  .project-card,
+  .projects-grid .project-card,
+  .section-title,
+  .section-subtitle {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .section-content.revealed .projects-grid .project-card,
+  .section-content.revealed .section-title,
+  .section-content.revealed .section-subtitle {
+    transform: none !important;
+    opacity: 1;
   }
 }
 </style>

@@ -312,7 +312,7 @@ export default {
                     previewImage: 'previewsharfin.svg',
                     techStack: [
                         { name: 'Flutter', icon: 'flutter.png', purpose: 'Cross-platform mobile development' },
-                        { name: 'Golang', icon: 'git.png', purpose: 'High-performance backend API development' },
+                        { name: 'Golang', icon: 'golang.png', purpose: 'High-performance backend API development' },
                         { name: 'MySQL', icon: 'mysql.png', purpose: 'Content and user data management' }
                     ],
                     features: [
@@ -368,10 +368,10 @@ export default {
                     image: 'porto.svg',
                     githubUrl: 'https://github.com/abrielkarisma/portofolio_abriel',
                     techStack: [
-                        { name: 'Vue.js', icon: 'js.png', purpose: 'Progressive JavaScript framework for UI development' },
+                        { name: 'Vue.js', icon: 'vue.png', purpose: 'Progressive JavaScript framework for UI development' },
                         { name: 'JavaScript', icon: 'js.png', purpose: 'Core programming language for interactivity' },
-                        { name: 'Tailwind CSS', icon: 'css.png', purpose: 'Utility-first CSS framework for styling' },
-                        { name: 'Vite', icon: 'vscode.png', purpose: 'Fast build tool and development server' }
+                        { name: 'Tailwind CSS', icon: 'tailwind.png', purpose: 'Utility-first CSS framework for styling' },
+                        { name: 'Vite', icon: 'vite.png', purpose: 'Fast build tool and development server' }
                     ],
                     features: [
                         { title: 'Responsive Design', description: 'Optimized experience across all device sizes' },
