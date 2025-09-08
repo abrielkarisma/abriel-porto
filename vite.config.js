@@ -4,8 +4,9 @@ import { resolve } from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue()],
-  base: '/abriel-porto/',
+  plugins: [vue()],base: process.env.NODE_ENV === 'production'
+    ? '/abriel-porto/' // saat build untuk GitHub Pages
+    : '/', 
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src')
