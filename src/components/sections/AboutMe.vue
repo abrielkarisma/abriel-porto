@@ -34,7 +34,8 @@
               </a>
             </div>
             <div class="cv-download-wrapper">
-              <a href="#" target="_blank" class="cv-download-btn">
+              <a href="https://drive.google.com/drive/folders/1iKdnievYZQ2OiFVdILjhxlD-W_LVVIlH?usp=sharing"
+                target="_blank" class="cv-download-btn">
                 <i class="fas fa-rocket" aria-hidden="true"></i>
                 <span>Grab Resume!</span>
                 <i class="fas fa-download download-icon" aria-hidden="true"></i>
