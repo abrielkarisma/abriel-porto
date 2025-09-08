@@ -1,6 +1,8 @@
 <script setup>
 import { Code, Github, User } from "lucide-vue-next";
 import { useRouter } from 'vue-router'
+import backgroundVideo from '@/assets/video/background.mp4'
+
 const router = useRouter()
 const navigateToPortfolio = () => {
   router.push('/portfolio')
@@ -9,7 +11,7 @@ const navigateToPortfolio = () => {
 <template>
   <div class="app-container" @click="navigateToPortfolio">
     <video autoplay loop muted playsinline class="video-background">
-      <source src="/src/assets/video/background.mp4" type="video/mp4" />
+      <source :src="backgroundVideo" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
     <div class="video-overlay"></div>

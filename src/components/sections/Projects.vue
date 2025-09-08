@@ -42,7 +42,6 @@ export default {
       inView: false,
       _stackTransforms: [],
       rfcImg,
-      // list of projects; change image filenames in this array when you add images to assets/images
       projects: [
         { title: 'RFC Store', slug: 'rfc-store', desc: 'RFC Store is a mobile application designed to simplify the sales process, streamline stock management, and provide comprehensive sales reports for harvested products.', tags: ['Flutter', 'Node.js', 'Payment Gateway'], image: 'rfcstore.svg', github: '#' },
         { title: 'Sharfin App', slug: 'sharfin-app', desc: 'It is a mobile application designed to provide comprehensive Islamic knowledge and Sharia finance insights through various formats such as videos, eBooks, and blogs.', tags: ['Flutter', 'Golang'], image: 'sharfin.svg', github: '#' },
@@ -52,26 +51,21 @@ export default {
     }
   },
   mounted() {
-    // Prepare observer
     this._io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // play stack -> grid
           this.playStackToGrid()
           this.inView = true
         } else {
-          // reset back to stack for replay later
           this.resetToStack()
           this.inView = false
         }
       })
     }, { threshold: 0.12 })
     if (this.$refs.projectsSection) this._io.observe(this.$refs.projectsSection)
-    // compute stack offsets on mount and resize
     this.computeStackTransforms()
     this._onResize = () => this.computeStackTransforms()
     window.addEventListener('resize', this._onResize)
-    // also watch visualViewport (handles browser zoom on many platforms)
     if (window.visualViewport) {
       this._vv = window.visualViewport
       this._onVVResize = () => this.computeStackTransforms()
@@ -89,7 +83,6 @@ export default {
   },
   methods: {
     imageUrl(name) {
-      // resolve asset path under src/assets/images
       try {
         return new URL(`../../assets/images/${name}`, import.meta.url).href
       } catch (e) {
@@ -97,7 +90,6 @@ export default {
       }
     },
     computeStackTransforms() {
-      // compute offsets needed to move each card to the center of the grid (stack position)
       const grid = this.$refs.grid
       if (!grid) return
       const gridRect = grid.getBoundingClientRect()
@@ -110,11 +102,9 @@ export default {
         const cardCenterY = r.top + r.height / 2
         const dx = centerX - cardCenterX
         const dy = centerY - cardCenterY
-        // give each card a small rotate so stack looks organic
         const rot = (i - cards.length / 2) * 6
         return { dx, dy, rot }
       })
-      // apply stacked state initially so page load shows stack
       this.applyStackTransformsImmediate()
     },
     applyStackTransformsImmediate() {
@@ -128,42 +118,31 @@ export default {
         card.style.zIndex = 100 + i
         card.style.opacity = '0.98'
       })
-      // force reflow
       void grid.offsetWidth
     },
     playStackToGrid() {
       const grid = this.$refs.grid
       if (!grid) return
-      // Use FLIP: measure stacked -> measure grid -> invert -> animate to natural position
       const cards = Array.from(grid.querySelectorAll('.project-card'))
       if (!cards.length) return
-      // recompute transforms in case layout/zoom changed, then ensure stacked state before measuring
       this.computeStackTransforms()
       this.applyStackTransformsImmediate()
-      // measure first (stacked) positions
       const firstRects = cards.map((c) => c.getBoundingClientRect())
-      // clear transforms so elements move to their natural grid positions
       cards.forEach((c) => {
         c.style.transition = 'none'
         c.style.transform = ''
         c.style.zIndex = ''
       })
-      // force reflow so final positions are computed
-      void grid.offsetWidth
-      // measure last (grid) positions
       const lastRects = cards.map((c) => c.getBoundingClientRect())
-      // apply inverted transforms and animate to identity with stagger
       cards.forEach((card, i) => {
         const first = firstRects[i]
         const last = lastRects[i]
         const dx = first.left - last.left
         const dy = first.top - last.top
         const rot = (i - cards.length / 2) * 6
-        // start from the inverted position (so it appears stacked)
         card.style.transform = `translate(${dx}px, ${dy}px) scale(0.78) rotate(${rot}deg)`
         card.style.zIndex = 100 + i
         card.style.opacity = '0.98'
-        // force layout per-card then animate to natural position
         void card.offsetWidth
         card.style.transition = `transform 560ms cubic-bezier(.22,.9,.33,1), opacity 360ms ease`
         card.style.transitionDelay = `${i * 70}ms`

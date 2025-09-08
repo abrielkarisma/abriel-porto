@@ -4,13 +4,11 @@
       <h2 class="section-title">Snapshots</h2>
       <p class="section-subtitle">A collection of captured moments that showcase my journey, experiences, and
         achievements throughout my academic and professional path.</p>
-
       <div class="carousel-container">
         <div class="carousel-wrapper">
           <button class="carousel-btn carousel-prev" @click="prevSlide" :disabled="currentSlide === 0">
             <i class="arrow-left">‹</i>
           </button>
-
           <div class="carousel-viewport">
             <div class="carousel-track" :style="{ transform: `translateX(-${currentSlide * slideWidth}%)` }">
               <div v-for="(photo, index) in photos" :key="index" class="carousel-slide" @click="openLightbox(index)">
@@ -25,20 +23,15 @@
               </div>
             </div>
           </div>
-
           <button class="carousel-btn carousel-next" @click="nextSlide" :disabled="currentSlide >= maxSlide">
             <i class="arrow-right">›</i>
           </button>
         </div>
-
-        <!-- Carousel Indicators -->
         <div class="carousel-indicators">
           <button v-for="(photo, index) in photos" :key="index" class="indicator"
             :class="{ active: isSlideVisible(index) }" @click="goToSlide(index)"></button>
         </div>
       </div>
-
-      <!-- Lightbox Modal -->
       <div v-if="lightboxOpen" class="lightbox" @click="closeLightbox">
         <div class="lightbox-content" @click.stop>
           <button class="lightbox-close" @click="closeLightbox">&times;</button>
@@ -50,8 +43,6 @@
           <button class="lightbox-nav lightbox-next" @click="nextPhoto">›</button>
         </div>
       </div>
-
-      <!-- Contact Section -->
       <div class="contact-section" :class="{ revealed: inView }">
         <h3 class="contact-title">Let's Connect</h3>
         <div class="contact-cards">
@@ -68,7 +59,6 @@
               <span class="contact-value">abrielcha.ac@gmail.com</span>
             </div>
           </a>
-
           <a href="https://wa.me/6282266095743" target="_blank" class="contact-card whatsapp-card">
             <div class="contact-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -82,7 +72,6 @@
               <span class="contact-value">+62 822-6609-5743</span>
             </div>
           </a>
-
           <a href="https://instagram.com/abrielkarisma" target="_blank" class="contact-card instagram-card">
             <div class="contact-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -102,103 +91,106 @@
     </div>
   </section>
 </template>
-
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
-
-// Intersection observer for animations
 const inView = ref(false)
 const snapshotsSection = ref(null)
-
-// Gallery photos data - you can customize titles and descriptions for each photo
+import asprakImg from '@/assets/snapshots/asprak.jpg'
+import dmlogistikImg from '@/assets/snapshots/dmlogistik.jpg'
+import dmtimImg from '@/assets/snapshots/DMtim.jpg'
+import talentImg from '@/assets/snapshots/talent.jpg'
+import himseImg from '@/assets/snapshots/himse.jpg'
+import ieeeImg from '@/assets/snapshots/ieee.jpg'
+import ieeemeetImg from '@/assets/snapshots/ieeemeet.jpg'
+import itmsibImg from '@/assets/snapshots/itmsib.jpg'
+import meetIeeeImg from '@/assets/snapshots/meet ieee.jpg'
+import msibalfathImg from '@/assets/snapshots/msibalfath.jpg'
+import pameranprodiImg from '@/assets/snapshots/pameranprodi.jpg'
+import pameranrfcImg from '@/assets/snapshots/pameranrfc.jpg'
+import panitiadmImg from '@/assets/snapshots/panitiadm.jpg'
 const photos = ref([
   {
-    src: '/src/assets/snapshots/asprak.jpg',
+    src: asprakImg,
     alt: 'Laboratory Assistant',
     title: 'Laboratory Assistant',
     description: 'Mobile Programming Lab Assistant at Telkom University Surabaya'
   },
   {
-    src: '/src/assets/snapshots/dmlogistik.jpg',
+    src: dmlogistikImg,
     alt: 'Logistic Team',
     title: 'Logistic Team Campus Orientation Committee',
     description: 'Add your description here'
   },
   {
-    src: '/src/assets/snapshots/DMtim.jpg',
+    src: dmtimImg,
     alt: 'Campus Orientation Committee',
     title: 'Campus Orientation Committee',
     description: 'Add your description here'
   },
-    {
-    src: '/src/assets/snapshots/talent.jpg',
+  {
+    src: talentImg,
     alt: 'Various Content of Me as a Talent',
     title: 'Various Content of Me as a Talent',
     description: 'Add your description here'
   },
   {
-    src: '/src/assets/snapshots/himse.jpg',
+    src: himseImg,
     alt: 'HIMSE',
     title: 'Software Engineering Student Association',
     description: 'Add your description here'
   },
   {
-    src: '/src/assets/snapshots/ieee.jpg',
+    src: ieeeImg,
     alt: 'IEEE Visit',
     title: 'IEEE Visit',
     description: 'Add your description here'
   },
   {
-    src: '/src/assets/snapshots/ieeemeet.jpg',
+    src: ieeemeetImg,
     alt: 'IEEE Team Meeting',
     title: 'IEEE Team Meeting',
     description: 'Add your description here'
   },
   {
-    src: '/src/assets/snapshots/itmsib.jpg',
+    src: itmsibImg,
     alt: 'Alfath Intern IT Division',
     title: 'Alfath Intern IT Division',
     description: 'Add your description here'
   },
   {
-    src: '/src/assets/snapshots/meet ieee.jpg',
+    src: meetIeeeImg,
     alt: 'IEEE Team Discussion',
     title: 'IEEE Team Discussion',
     description: 'Add your description here'
   },
   {
-    src: '/src/assets/snapshots/msibalfath.jpg',
+    src: msibalfathImg,
     alt: 'MSIB Batch 6 at Alfath Corporation',
     title: 'MSIB Batch 6 at Alfath Corporation',
     description: 'Add your description here'
   },
   {
-    src: '/src/assets/snapshots/pameranprodi.jpg',
+    src: pameranprodiImg,
     alt: 'Representing Software Engineering at Campus Expo',
     title: 'Representing Software Engineering at Campus Expo',
     description: 'Add your description here'
   },
   {
-    src: '/src/assets/snapshots/pameranrfc.jpg',
+    src: pameranrfcImg,
     alt: 'RFC Showcase',
     title: 'RFC Showcase',
     description: 'Add your description here'
   },
   {
-    src: '/src/assets/snapshots/panitiadm.jpg',
+    src: panitiadmImg,
     alt: 'Campus Orientation Committee',
     title: 'Campus Orientation Committee',
     description: 'Add your description here'
   },
-
 ])
-
-// Carousel functionality
 const currentSlide = ref(0)
-const slidesPerView = ref(4) // Number of slides visible at once
-const slideWidth = ref(25) // Width percentage per slide (100 / slidesPerView)
-
-// Responsive slides per view
+const slidesPerView = ref(4)
+const slideWidth = ref(25)
 const updateSlidesPerView = () => {
   const width = window.innerWidth
   if (width < 480) {
@@ -215,38 +207,28 @@ const updateSlidesPerView = () => {
     slideWidth.value = 25
   }
 }
-
-// Computed properties
 const maxSlide = computed(() => {
   return Math.max(0, photos.value.length - slidesPerView.value)
 })
-
-// Carousel navigation
 const nextSlide = () => {
   if (currentSlide.value < maxSlide.value) {
     currentSlide.value++
   }
 }
-
 const prevSlide = () => {
   if (currentSlide.value > 0) {
     currentSlide.value--
   }
 }
-
 const goToSlide = (index) => {
   const targetSlide = Math.min(index, maxSlide.value)
   currentSlide.value = targetSlide
 }
-
 const isSlideVisible = (index) => {
   return index >= currentSlide.value && index < currentSlide.value + slidesPerView.value
 }
-
-// Auto-play functionality (optional)
 const autoPlay = ref(true)
 const autoPlayInterval = ref(null)
-
 const startAutoPlay = () => {
   if (autoPlay.value) {
     autoPlayInterval.value = setInterval(() => {
@@ -255,46 +237,36 @@ const startAutoPlay = () => {
       } else {
         nextSlide()
       }
-    }, 4000) // Change slide every 4 seconds
+    }, 4000)
   }
 }
-
 const stopAutoPlay = () => {
   if (autoPlayInterval.value) {
     clearInterval(autoPlayInterval.value)
     autoPlayInterval.value = null
   }
 }
-
-// Lightbox functionality
 const lightboxOpen = ref(false)
 const currentPhotoIndex = ref(0)
-
 const openLightbox = (index) => {
   currentPhotoIndex.value = index
   lightboxOpen.value = true
   document.body.style.overflow = 'hidden'
 }
-
 const closeLightbox = () => {
   lightboxOpen.value = false
   document.body.style.overflow = 'auto'
 }
-
 const nextPhoto = () => {
   currentPhotoIndex.value = (currentPhotoIndex.value + 1) % photos.value.length
 }
-
 const prevPhoto = () => {
   currentPhotoIndex.value = currentPhotoIndex.value === 0
     ? photos.value.length - 1
     : currentPhotoIndex.value - 1
 }
-
-// Keyboard navigation
 const handleKeydown = (event) => {
   if (!lightboxOpen.value) return
-
   if (event.key === 'Escape') {
     closeLightbox()
   } else if (event.key === 'ArrowRight') {
@@ -303,14 +275,11 @@ const handleKeydown = (event) => {
     prevPhoto()
   }
 }
-
 onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
   updateSlidesPerView()
   window.addEventListener('resize', updateSlidesPerView)
   startAutoPlay()
-
-  // Intersection observer for animations
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -318,19 +287,16 @@ onMounted(() => {
       }
     })
   }, { threshold: 0.12 })
-
   if (snapshotsSection.value) {
     io.observe(snapshotsSection.value)
   }
 })
-
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
   window.removeEventListener('resize', updateSlidesPerView)
   stopAutoPlay()
 })
 </script>
-
 <style scoped>
 .snapshots-section {
   padding: 2rem 2rem;
@@ -390,7 +356,6 @@ onUnmounted(() => {
   margin-top: 2rem;
 }
 
-/* Carousel Styles */
 .carousel-container {
   margin-top: 2rem;
   max-width: 100%;
@@ -419,7 +384,6 @@ onUnmounted(() => {
 
 .carousel-slide {
   flex: 0 0 25%;
-  /* Default: 4 slides visible */
   min-width: 0;
   cursor: pointer;
   position: relative;
@@ -491,7 +455,6 @@ onUnmounted(() => {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Carousel Navigation Buttons */
 .carousel-btn {
   background: transparent;
   border: none;
@@ -526,7 +489,6 @@ onUnmounted(() => {
   line-height: 1;
 }
 
-/* Carousel Indicators */
 .carousel-indicators {
   display: flex;
   justify-content: center;
@@ -549,7 +511,6 @@ onUnmounted(() => {
   transform: scale(1.2);
 }
 
-/* Lightbox Styles */
 .lightbox {
   position: fixed;
   top: 0;
@@ -680,11 +641,9 @@ onUnmounted(() => {
   }
 }
 
-/* Responsive Design */
 @media (max-width: 1024px) {
   .carousel-slide {
     flex: 0 0 33.333%;
-    /* 3 slides visible */
   }
 }
 
@@ -704,7 +663,6 @@ onUnmounted(() => {
 
   .carousel-slide {
     flex: 0 0 50%;
-    /* 2 slides visible */
   }
 
   .slide-image-container {
@@ -740,7 +698,6 @@ onUnmounted(() => {
 @media (max-width: 480px) {
   .carousel-slide {
     flex: 0 0 100%;
-    /* 1 slide visible */
   }
 
   .slide-image-container {
@@ -781,7 +738,6 @@ onUnmounted(() => {
   }
 }
 
-/* Contact Section */
 .contact-section {
   margin-top: 4rem;
   padding-top: 2rem;
@@ -893,7 +849,6 @@ onUnmounted(() => {
   font-size: 0.85rem;
 }
 
-/* Contact Responsive */
 @media (max-width: 768px) {
   .contact-section {
     margin-top: 2rem;

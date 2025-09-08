@@ -356,7 +356,6 @@ export default {
   color: #e1306c
 }
 
-/* CV Download Button Styles */
 .cv-download-wrapper {
   margin-top: 1.2rem;
   display: flex;

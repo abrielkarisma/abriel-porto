@@ -350,7 +350,6 @@ export default {
     max-width: 600px;
   }
 
-  /* Garis tetap di tengah */
   .line {
     left: 50%;
     width: 2px;
@@ -364,7 +363,6 @@ export default {
     border-width: 2px;
   }
 
-  /* Timeline items tetap kiri-kanan tapi lebih kecil */
   .timeline-item {
     width: 50%;
     padding: 15px 8px;
@@ -403,7 +401,6 @@ export default {
     margin: 0;
   }
 
-  /* Year tetap di posisi center timeline */
   .year {
     position: absolute;
     top: 50%;
@@ -472,7 +469,6 @@ export default {
   }
 }
 
-/* Extra small devices - sangat compact */
 @media (max-width: 360px) {
   .timeline {
     max-width: 320px;

@@ -1,6 +1,5 @@
 <template>
     <div class="project-detail-page">
-        <!-- Back Button Top -->
         <div class="back-button-top">
             <router-link to="/portfolio" class="back-btn-top">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -10,7 +9,6 @@
             </router-link>
         </div>
 
-        <!-- Hero Section -->
         <section class="hero-section">
             <div class="hero-content">
                 <div class="breadcrumb">
@@ -20,7 +18,6 @@
                 </div>
                 <h1 class="project-title">{{ project.title }}</h1>
 
-                <!-- Mockup Image -->
                 <div class="hero-mockup">
                     <img :src="imageUrl(project.image)" :alt="project.title + ' Mockup'" />
                 </div>
@@ -29,7 +26,6 @@
             </div>
         </section>
 
-        <!-- Content Separator -->
         <div class="content-separator">
             <div class="separator-line"></div>
             <div class="separator-icon">
@@ -41,10 +37,8 @@
             <div class="separator-line"></div>
         </div>
 
-        <!-- Project Content -->
         <section class="content-section">
             <div class="content-container">
-                <!-- Preview Section -->
                 <div v-if="project.previewImage" class="preview-section">
                     <h2 class="section-heading">Application Preview</h2>
                     <div class="full-preview-container">
@@ -52,7 +46,6 @@
                     </div>
                 </div>
 
-                <!-- Content Separator -->
                 <div v-if="project.previewImage" class="content-separator">
                     <div class="separator-line"></div>
                     <div class="separator-icon">
@@ -64,7 +57,6 @@
                     <div class="separator-line"></div>
                 </div>
 
-                <!-- Video Section for RFC Store -->
                 <div v-if="project.slug === 'rfc-store'" class="video-section">
                     <h2 class="section-heading">Demo Video</h2>
                     <div class="video-container-clean">
@@ -75,7 +67,6 @@
                     </div>
                 </div>
 
-                <!-- Content Separator -->
                 <div v-if="project.slug === 'rfc-store'" class="content-separator">
                     <div class="separator-line"></div>
                     <div class="separator-icon">
@@ -86,7 +77,6 @@
                     <div class="separator-line"></div>
                 </div>
 
-                <!-- Description Section -->
                 <div class="description-section">
                     <h2 class="section-heading">About This Project</h2>
                     <div class="description-content">
@@ -94,7 +84,6 @@
                     </div>
                 </div>
 
-                <!-- Content Separator -->
                 <div class="content-separator">
                     <div class="separator-line"></div>
                     <div class="separator-icon">
@@ -106,7 +95,6 @@
                     <div class="separator-line"></div>
                 </div>
 
-                <!-- Tech Stack Section -->
                 <div class="tech-stack-section">
                     <h2 class="section-heading">Technology Stack</h2>
                     <div class="tech-grid">
@@ -122,7 +110,6 @@
                     </div>
                 </div>
 
-                <!-- Content Separator -->
                 <div v-if="project.features" class="content-separator">
                     <div class="separator-line"></div>
                     <div class="separator-icon">
@@ -133,7 +120,6 @@
                     <div class="separator-line"></div>
                 </div>
 
-                <!-- Features Section -->
                 <div class="features-section" v-if="project.features">
                     <h2 class="section-heading">Key Features</h2>
                     <div class="features-grid">
@@ -151,7 +137,6 @@
                     </div>
                 </div>
 
-                <!-- Documentation Section for Refoodbish -->
                 <div v-if="project.slug === 'refoodbish'" class="documentation-section">
                     <h2 class="section-heading">Project Documentation</h2>
                     <div class="doc-content">
@@ -167,7 +152,6 @@
                     </div>
                 </div>
 
-                <!-- Content Separator -->
                 <div v-if="project.slug === 'refoodbish'" class="content-separator">
                     <div class="separator-line"></div>
                     <div class="separator-icon">
@@ -178,7 +162,6 @@
                     <div class="separator-line"></div>
                 </div>
 
-                <!-- HKI Section for RFC Store and Refoodbish -->
                 <div v-if="project.hkiInfo" class="hki-section">
                     <h2 class="section-heading">{{ project.hkiInfo.title }}</h2>
                     <div class="hki-content">
@@ -192,7 +175,7 @@
                         <p class="hki-description">{{ project.hkiInfo.description }}</p>
                         <div class="hki-details">
                             <span class="hki-reg-number">Registration Number: {{ project.hkiInfo.registrationNumber
-                                }}</span>
+                            }}</span>
                         </div>
                         <a :href="project.hkiInfo.downloadUrl" class="hki-download-link" target="_blank">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -204,7 +187,6 @@
                     </div>
                 </div>
 
-                <!-- Content Separator -->
                 <div v-if="project.hkiInfo" class="content-separator">
                     <div class="separator-line"></div>
                     <div class="separator-icon">
@@ -216,11 +198,9 @@
                     <div class="separator-line"></div>
                 </div>
 
-                <!-- Links Section -->
                 <div class="links-section">
                     <h2 class="section-heading">Project Links</h2>
                     <div class="project-links">
-                        <!-- Multiple GitHub links for RFC Store -->
                         <template v-if="project.githubUrls">
                             <a v-for="(github, index) in project.githubUrls" :key="index" :href="github.url"
                                 class="project-link github-link" target="_blank">
@@ -231,7 +211,6 @@
                                 {{ github.name }}
                             </a>
                         </template>
-                        <!-- Single GitHub link for other projects -->
                         <a v-else-if="project.githubUrl" :href="project.githubUrl" class="project-link github-link"
                             target="_blank">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -261,7 +240,6 @@
             </div>
         </section>
 
-        <!-- Back Button -->
         <div class="back-button-container">
             <router-link to="/portfolio" class="back-button">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -312,8 +290,8 @@ export default {
                     hkiInfo: {
                         title: 'Intellectual Property Rights (HKI)',
                         description: 'This project has been officially registered for Intellectual Property Rights protection.',
-                        downloadUrl: 'https://drive.google.com/file/d/1dY-BFvMfB5treK8TemOOdKAXwQI9XpTi/view?usp=sharing', // Will be replaced with actual link
-                        registrationNumber: '000944284' // Example number, replace with actual
+                        downloadUrl: 'https://drive.google.com/file/d/1dY-BFvMfB5treK8TemOOdKAXwQI9XpTi/view?usp=sharing',
+                        registrationNumber: '000944284'
                     }
                 },
                 'sharfin-app': {
@@ -373,8 +351,8 @@ export default {
                     hkiInfo: {
                         title: 'Intellectual Property Rights (HKI)',
                         description: 'This project has been officially registered for Intellectual Property Rights protection.',
-                        downloadUrl: 'https://drive.google.com/file/d/19sa-8sLYghPaM13osBElyWgnH-PL5D-I/view?usp=sharing', // Will be replaced with actual link
-                        registrationNumber: '000449643' // Example number, replace with actual
+                        downloadUrl: 'https://drive.google.com/file/d/19sa-8sLYghPaM13osBElyWgnH-PL5D-I/view?usp=sharing',
+                        registrationNumber: '000449643'
                     }
                 },
                 'portfolio-website': {
@@ -428,7 +406,6 @@ export default {
         }
     },
     mounted() {
-        // Check if project exists, redirect if not
         if (!this.project.title) {
             this.$router.push('/portfolio')
         }
@@ -635,7 +612,6 @@ export default {
     position: relative;
     width: 100%;
     padding-bottom: 56.25%;
-    /* 16:9 aspect ratio */
     height: 0;
     overflow: hidden;
     background: transparent;
@@ -655,7 +631,6 @@ export default {
     position: relative;
     width: 100%;
     padding-bottom: 56.25%;
-    /* 16:9 aspect ratio */
     height: 0;
     overflow: hidden;
     border-radius: 16px;

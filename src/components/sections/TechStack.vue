@@ -241,7 +241,6 @@ watch(activeTab, async () => {
   font-size: 1rem;
 }
 
-/* Mobile Responsiveness - Maintain horizontal layout, just scale down */
 @media (max-width: 768px) {
   .skills-section {
     padding: 2rem 1rem;

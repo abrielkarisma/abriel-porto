@@ -2,7 +2,7 @@
   <div class="portfolio-container">
     <div class="nav-video-wrapper">
       <video autoplay loop muted playsinline class="nav-video">
-        <source src="/src/assets/video/background.mp4" type="video/mp4" />
+        <source :src="backgroundVideo" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       <div class="nav-video-overlay"></div>
@@ -37,6 +37,8 @@ import Projects from "../components/sections/Projects.vue"
 import TechStack from "../components/sections/TechStack.vue"
 import OutsideCode from "../components/sections/OutsideCode.vue"
 import Snapshots from "../components/sections/Snapshots.vue"
+import backgroundVideo from '@/assets/video/background.mp4'
+
 const router = useRouter()
 const goBack = () => {
   router.push("/")
@@ -203,7 +205,6 @@ const goBack = () => {
   border: 1px solid rgba(156, 163, 175, 0.2);
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
   .taskbar-content {
     padding: 0.8rem 1rem;
