@@ -22,7 +22,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory('/abriel-porto/'), // sesuaikan dengan base di vite.config.js
     routes
 })
 
