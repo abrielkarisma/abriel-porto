@@ -60,7 +60,8 @@ export default {
       workTimeline: [
         { title: 'PT. Alfath Teknologi Kreatif', subtitle: 'Front End Mobile Developer', description: "Developed the front-end of 'SharfinApp' with Flutter, integrated RESTful APIs, and led a 4-member team to ensure efficient collaboration, timely delivery, and streamlined project management.", year: '2024' },
         { title: 'Alfath Streetwear', subtitle: 'Talent', description: "Served as a brand talent model, contributing to visual representation and brand awareness, while also conceptualizing video content to enhance engagement and deliver creative storytelling aligned with the brand's identity.", year: '2024' },
-        { title: 'Mobile Programming Course', subtitle: 'Laboratory Assistant', description: 'Served as a teaching assistant for the Mobile Programming course, supporting students in understanding concepts, guiding practical sessions, and assisting in troubleshooting technical issues.', year: '2024' }
+        { title: 'Mobile Programming Course', subtitle: 'Laboratory Assistant', description: 'Served as a teaching assistant for the Mobile Programming course, supporting students in understanding concepts, guiding practical sessions, and assisting in troubleshooting technical issues.', year: '2024' },
+        { title: 'Wisewires Indonesia', subtitle: 'IT QA Tester', description: 'Ensured the quality and reliability of web and mobile applications by performing thorough functional, regression, and release testing. Identified, documented, and tracked defects to help developers deliver stable and user-friendly software.', year: 'Present' }
       ],
       mounted: false,
       _observer: null,
