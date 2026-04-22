@@ -10,12 +10,7 @@
             Known as abriel
           </p>
           <p class="description font-raleway">
-            A Software Engineering fresh graduate from Telkom University Surabaya with cum laude honors
-            (GPA 3.70/4.00). With a passion for web and mobile development, I continuously embrace cutting-edge
-            technologies and implement them across my projects. I thrive in environments that challenge me to
-            expand my skills and knowledge. Always eager to learn, adapt, and grow, I believe that the best
-            technology creates meaningful positive impact on people's lives. Ready to take on new challenges
-            and push the boundaries of what's possible.
+            A Software Engineering fresh graduate from Telkom University Surabaya with cum laude honors (GPA 3.70/4.00), I have a strong passion for web and mobile development while also holding a keen interest in Quality Assurance (QA) and software testing. I continuously embrace cutting-edge technologies and apply them across my projects, alongside hands-on experience in identifying bugs, creating test cases, and ensuring application quality through systematic testing. I thrive in challenging environments that push me to grow, and I am always eager to learn, adapt, and contribute to building reliable, user-friendly applications that create meaningful positive impact.
           </p>
           <div class="about-social">
             <h4 class="social-title">Follow Me</h4>

@@ -48,8 +48,8 @@
 export default {
   data() {
     return {
-      tabs: ['Organization', 'Work'],
-      activeTab: 'Organization',
+      tabs: ['Work', 'Organization'],
+      activeTab: 'Work',
       organizationTimeline: [
         { title: 'Student Marketing Staff', subtitle: 'Telkom University Surabaya', description: 'Promoted the university to prospective students through events and campus tours while strengthening public speaking, communication, and interpersonal skills.', year: '2021-2022' },
         { title: 'Software Engineering Student Association', subtitle: 'Vice head of Research & Technology', description: 'Coordinated research and technology initiatives, supported entrepreneurial activities, and organized skill-enhancing workshops to foster innovation and knowledge-sharing within the organization.', year: '2022-2024' },

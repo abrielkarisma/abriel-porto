@@ -16,6 +16,7 @@
             <li><a href="#projects">Projects</a></li>
             <li><a href="#techstack">Skills</a></li>
             <li><a href="#outside">Experiences</a></li>
+            <li><a href="#outside">Achievement</a></li>
             <li><a href="#snapshots">Snapshots</a></li>
           </ul>
         </div>
@@ -26,6 +27,7 @@
       <Projects />
       <TechStack />
       <OutsideCode />
+      <Achievement />
       <Snapshots />
     </div>
   </div>
@@ -36,6 +38,7 @@ import AboutMe from "../components/sections/AboutMe.vue"
 import Projects from "../components/sections/Projects.vue"
 import TechStack from "../components/sections/TechStack.vue"
 import OutsideCode from "../components/sections/OutsideCode.vue"
+import Achievement from "../components/sections/Achievement.vue"
 import Snapshots from "../components/sections/Snapshots.vue"
 import backgroundVideo from '@/assets/video/background.mp4'
 

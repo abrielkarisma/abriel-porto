@@ -108,8 +108,14 @@ import msibalfathImg from '@/assets/snapshots/msibalfath.jpg'
 import pameranprodiImg from '@/assets/snapshots/pameranprodi.jpg'
 import pameranrfcImg from '@/assets/snapshots/pameranrfc.jpg'
 import panitiadmImg from '@/assets/snapshots/panitiadm.jpg'
+import wisewiresImg from '@/assets/snapshots/wisewiresteam.jpg'
 const photos = ref([
   {
+    src: wisewiresImg,
+    alt: 'Wisewires Team',
+    title: 'Wisewires Team',
+    description: 'Member of the Wisewires Indonesia'
+  },{
     src: asprakImg,
     alt: 'Laboratory Assistant',
     title: 'Laboratory Assistant',
@@ -387,6 +393,7 @@ onUnmounted(() => {
   min-width: 0;
   cursor: pointer;
   position: relative;
+  padding: 0 0.5rem;
 }
 
 .slide-image-container {
@@ -394,7 +401,7 @@ onUnmounted(() => {
   width: 100%;
   height: 280px;
   overflow: hidden;
-  margin: 0 0.5rem;
+  margin: 0rem;
   border-radius: 15px;
   background: white;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
