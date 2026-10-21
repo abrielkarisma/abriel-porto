@@ -54,13 +54,10 @@ const tools = [
 ]
 // Skill QA. Ikon dibuat otomatis dari inisial kalau file icon-nya belum ada.
 const qaSkills = [
-  { icon: '', name: 'Katalon Studio' },
-  { icon: '', name: 'Playwright' },
-  { icon: '', name: 'Selenium' },
-  { icon: '', name: 'Appium' },
-  { icon: '', name: 'JMeter' },
-  { icon: '', name: 'TestRail' },
-  { icon: '', name: 'Jira' },
+  { icon: 'katalon.png', name: 'Katalon Studio' },
+  { icon: 'playwright.png', name: 'Playwright' },
+  { icon: 'testrail.png', name: 'TestRail' },
+  { icon: 'jira.png', name: 'Jira' },
   { icon: 'postman.png', name: 'Postman' },
   { icon: 'swagger.png', name: 'Swagger' },
   { icon: 'git.png', name: 'Git & GitHub Actions' },
