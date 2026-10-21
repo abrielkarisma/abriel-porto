@@ -16,7 +16,7 @@
             <li><a href="#projects">Projects</a></li>
             <li><a href="#techstack">Skills</a></li>
             <li><a href="#outside">Experiences</a></li>
-            <li><a href="#outside">Achievement</a></li>
+            <li><a href="#achievement">Achievement</a></li>
             <li><a href="#snapshots">Snapshots</a></li>
           </ul>
         </div>
@@ -210,24 +210,36 @@ const goBack = () => {
 
 @media (max-width: 768px) {
   .taskbar-content {
-    padding: 0.8rem 1rem;
+    padding: 0.75rem 1rem;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.6rem;
   }
 
   .logo h2 {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
   }
 
+  /* Nav jadi satu baris yang bisa di-scroll horizontal,
+     bukan wrap 2 baris (yang bikin tinggi nav bar membengkak di mobile). */
   .nav-menu {
-    gap: 1rem;
-    flex-wrap: wrap;
-    justify-content: center;
+    gap: 0.3rem;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    max-width: 100%;
+    padding-bottom: 2px;
+  }
+
+  .nav-menu::-webkit-scrollbar {
+    display: none;
   }
 
   .nav-menu a {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.82rem;
+    white-space: nowrap;
   }
 
   .portfolio-content {
@@ -250,20 +262,21 @@ const goBack = () => {
 
 @media (max-width: 480px) {
   .taskbar-content {
-    padding: 0.6rem 0.8rem;
+    padding: 0.5rem 0.8rem;
+    gap: 0.4rem;
   }
 
   .logo h2 {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
 
   .nav-menu {
-    gap: 0.5rem;
+    gap: 0.25rem;
   }
 
   .nav-menu a {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.8rem;
+    padding: 0.3rem 0.55rem;
+    font-size: 0.78rem;
   }
 
   .portfolio-content {

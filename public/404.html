@@ -6,13 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
     <script>
-        var pathSegmentsToKeep = 1;
+        // Base path repo ini di GitHub Pages.
+        // '/abriel-porto/' untuk project site (username.github.io/<repo>).
+        // '/' kalau dipakai di domain sendiri yang root-nya langsung repo ini.
+        var BASE_PATH = '/abriel-porto/';
 
         var l = window.location;
+        var rest = l.pathname.indexOf(BASE_PATH) === 0
+            ? l.pathname.slice(BASE_PATH.length - 1)
+            : l.pathname;
+
         l.replace(
             l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-            l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-            l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+            BASE_PATH + '?/' + rest.replace(/^\//, '').replace(/&/g, '~and~') +
             (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
             l.hash
         );

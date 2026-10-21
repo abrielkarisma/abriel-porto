@@ -3,19 +3,89 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="src/assets/kaylogo.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Abriel Portofolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Primary SEO -->
+  <title>Abriel Karisma — QA Engineer & Mobile Developer</title>
+  <meta name="description"
+    content="Teguh Sambada Abriel Karisma (Abriel) — IT QA Tester at Wisewires Indonesia and Software Engineering graduate (cum laude, GPA 3.70) from Telkom University Surabaya. Mobile app development (Flutter, Kotlin), web development, and systematic software testing." />
+  <meta name="author" content="Teguh Sambada Abriel Karisma" />
+  <meta name="keywords"
+    content="Abriel Karisma, QA Engineer, Software Tester, Mobile Developer, Flutter, Kotlin, Telkom University, Wisewires" />
+  <link rel="canonical" href="https://abrielkarisma.github.io/abriel-porto/" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="icon" type="image/svg+xml" href="src/assets/kaylogo.svg" />
+  <link rel="apple-touch-icon" href="src/assets/kaylogo.svg" />
+
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Abriel Karisma Portfolio" />
+  <meta property="og:title" content="Abriel Karisma — QA Engineer & Mobile Developer" />
+  <meta property="og:description"
+    content="IT QA Tester at Wisewires Indonesia · Software Engineering cum laude graduate (GPA 3.70) from Telkom University Surabaya. Flutter, Kotlin, web development & systematic software testing." />
+  <meta property="og:url" content="https://abrielkarisma.github.io/abriel-porto/" />
+  <meta property="og:image" content="https://abrielkarisma.github.io/abriel-porto/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Abriel Karisma — QA Engineer & Mobile Developer" />
+  <meta property="og:locale" content="id_ID" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Abriel Karisma — QA Engineer & Mobile Developer" />
+  <meta name="twitter:description"
+    content="IT QA Tester at Wisewires Indonesia · Software Engineering cum laude graduate (GPA 3.70) from Telkom University Surabaya." />
+  <meta name="twitter:image" content="https://abrielkarisma.github.io/abriel-porto/og-image.jpg" />
+  <meta name="twitter:image:alt" content="Abriel Karisma — QA Engineer & Mobile Developer" />
+
+  <!-- LinkedIn / Slack / Telegram pakai og: saja -->
+  <meta name="robots" content="index, follow" />
+
+  <!-- Fonts: Satoshi (Fontshare) + Inter & Raleway (Google) -->
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Satoshi:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Raleway:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Raleway:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
 
+  <!-- Structured data: Person -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Teguh Sambada Abriel Karisma",
+    "alternateName": "Abriel Karisma",
+    "jobTitle": "IT QA Tester",
+    "url": "https://abrielkarisma.github.io/abriel-porto/",
+    "email": "mailto:abrielcha.ac@gmail.com",
+    "sameAs": [
+      "https://github.com/abrielkarisma",
+      "https://linkedin.com/in/abrielkarisma25",
+      "https://instagram.com/abrielkarisma"
+    ],
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Telkom University Surabaya"
+    },
+    "worksFor": {
+      "@type": "Organization",
+      "name": "PT Wisewires Software Indonesia"
+    },
+    "knowsAbout": [
+      "Software Quality Assurance",
+      "Manual & Automated Testing",
+      "Flutter",
+      "Kotlin",
+      "Vue.js",
+      "REST API Testing"
+    ]
+  }
+  </script>
 
+  <!-- GitHub Pages SPA fallback: /?/path di-rewrite balik ke /path -->
   <script>
-
     (function (l) {
       if (l.search[1] === '/') {
         var decoded = l.search.slice(1).split('&').map(function (s) {
@@ -27,10 +97,30 @@
       }
     }(window.location))
   </script>
-
 </head>
 
 <body>
+  <!-- Konten statis supaya crawler & user tanpa JS tetap dapat informasi -->
+  <noscript>
+    <h1>Abriel Karisma — QA Engineer &amp; Mobile Developer</h1>
+    <p>IT QA Tester at Wisewires Indonesia. Software Engineering graduate (cum laude, GPA 3.70/4.00) from Telkom
+      University Surabaya. I build and test mobile &amp; web apps (Flutter, Kotlin, Vue.js) and practice systematic
+      software testing: functional, regression, API, and release testing.</p>
+    <h2>Projects</h2>
+    <ul>
+      <li>RFC Store — Flutter, Node.js, Payment Gateway (sales, stock, and harvest reporting)</li>
+      <li>Sharfin App — Flutter, Golang (Islamic knowledge &amp; Sharia finance content)</li>
+      <li>Refoodbish — Kotlin (sharing surplus edible food)</li>
+      <li>Portfolio Website — Vue.js, JavaScript, Tailwind CSS</li>
+    </ul>
+    <h2>Contact</h2>
+    <ul>
+      <li>Email: <a href="mailto:abrielcha.ac@gmail.com">abrielcha.ac@gmail.com</a></li>
+      <li>GitHub: <a href="https://github.com/abrielkarisma">github.com/abrielkarisma</a></li>
+      <li>LinkedIn: <a href="https://linkedin.com/in/abrielkarisma25">linkedin.com/in/abrielkarisma25</a></li>
+      <li>Instagram: <a href="https://instagram.com/abrielkarisma">@abrielkarisma</a></li>
+    </ul>
+  </noscript>
   <div id="app"></div>
   <script type="module" src="/src/main.js"></script>
 </body>

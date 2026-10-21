@@ -35,9 +35,9 @@ const navigateToPortfolio = () => {
           <span class="name-highlight font-bold">Abriel's</span> Portofolio Website
         </h2>
       </div>
-      <div class="website-badge">
-        <span class="badge-text">www.abrielwebsoon.com</span>
-      </div>
+      <router-link class="website-badge" to="/portfolio">
+        <span class="badge-text">abrielkarisma.github.io/abriel-porto</span>
+      </router-link>
       <div class="click-indicator">
         <div class="click-text">Klik di mana saja untuk masuk</div>
         <div class="click-animation">

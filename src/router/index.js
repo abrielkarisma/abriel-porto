@@ -22,7 +22,9 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory('/abriel-porto/'),
+    // Ambil base dari Vite (vite.config.js) supaya gak hardcode.
+    // Router-link otomatis mengikuti base ini, jadi link gak pernah salah path.
+    history: createWebHistory(import.meta.env.BASE_URL),
     routes
 })
 

@@ -8,12 +8,14 @@
       <div class="tab-menu">
         <button :class="['tab', { active: activeTab === 'tech' }]" @click="activeTab = 'tech'">Tech Stack</button>
         <button :class="['tab', { active: activeTab === 'tools' }]" @click="activeTab = 'tools'">Tools</button>
+        <button :class="['tab', { active: activeTab === 'qa' }]" @click="activeTab = 'qa'">QA &amp; Testing</button>
       </div>
       <div class="skills-grid">
         <div class="skill-card" v-for="(skill, i) in displayedSkills" :key="skill.name"
           :style="{ transitionDelay: (i * 70) + 'ms' }">
           <div class="skill-icon">
-            <img :src="getIcon(skill.icon)" :alt="skill.name" />
+            <img v-if="skill.icon" :src="getIcon(skill.icon)" :alt="skill.name" />
+            <span v-else class="skill-mono" aria-hidden="true">{{ monogram(skill.name) }}</span>
           </div>
           <p class="skill-name">{{ skill.name }}</p>
         </div>
@@ -50,6 +52,19 @@ const tools = [
   { icon: 'trello.png', name: 'Trello' },
   { icon: 'androidstudio.png', name: 'Android Studio' },
 ]
+// Skill QA. Ikon dibuat otomatis dari inisial kalau file icon-nya belum ada.
+const qaSkills = [
+  { icon: '', name: 'Katalon Studio' },
+  { icon: '', name: 'Playwright' },
+  { icon: '', name: 'Selenium' },
+  { icon: '', name: 'Appium' },
+  { icon: '', name: 'JMeter' },
+  { icon: '', name: 'TestRail' },
+  { icon: '', name: 'Jira' },
+  { icon: 'postman.png', name: 'Postman' },
+  { icon: 'swagger.png', name: 'Swagger' },
+  { icon: 'git.png', name: 'Git & GitHub Actions' },
+]
 const getIcon = (filename) => {
   if (!filename) return ''
   try {
@@ -58,6 +73,12 @@ const getIcon = (filename) => {
     return ''
   }
 }
+const monogram = (name) => name
+  .split(/\s+/)
+  .slice(0, 2)
+  .map((w) => w[0])
+  .join('')
+  .toUpperCase()
 const mounted = ref(false)
 const sectionRef = ref(null)
 let _observer = null
@@ -92,7 +113,11 @@ onBeforeUnmount(() => {
     _observer = null
   }
 })
-const displayedSkills = computed(() => (activeTab.value === 'tech' ? techSkills : tools))
+const displayedSkills = computed(() => {
+  if (activeTab.value === 'tech') return techSkills
+  if (activeTab.value === 'qa') return qaSkills
+  return tools
+})
 watch(activeTab, async () => {
   if (!sectionRef.value) return
   if (mounted.value) {
@@ -233,6 +258,21 @@ watch(activeTab, async () => {
   height: 2rem;
   object-fit: contain;
   display: block;
+}
+
+/* Ikon cadangan: inisial skill, dipakai kalau file icon-nya belum ada */
+.skill-mono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #123458, #1e4a7a);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .skill-name {
