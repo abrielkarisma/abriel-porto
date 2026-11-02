@@ -20,7 +20,6 @@
     </nav>
 
     <div class="portfolio-content">
-      <ShowcaseHero />
       <AboutMe />
       <Projects />
       <TechStack />
@@ -40,7 +39,6 @@
 </template>
 
 <script setup>
-import ShowcaseHero from "../components/sections/ShowcaseHero.vue"
 import AboutMe from "../components/sections/AboutMe.vue"
 import Projects from "../components/sections/Projects.vue"
 import TechStack from "../components/sections/TechStack.vue"
