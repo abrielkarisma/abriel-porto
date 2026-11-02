@@ -1,15 +1,18 @@
 <template>
   <section id="techstack" class="skills-section" :class="{ 'is-mounted': mounted }" ref="sectionRef">
-    <div class="section-content">
-      <h2 class="section-title">My Skills</h2>
-      <p class="section-subtitle">
-        Here are some of the technologies and tools I work with.
-      </p>
+    <div class="wrap">
+      <header class="section-head">
+        <span class="section-label">03 — SKILLS</span>
+        <h2 class="section-title-sw">Arsenal</h2>
+        <p class="section-sub-sw">The stack I run — code, tools &amp; QA.</p>
+      </header>
+
       <div class="tab-menu">
         <button :class="['tab', { active: activeTab === 'tech' }]" @click="activeTab = 'tech'">Tech Stack</button>
         <button :class="['tab', { active: activeTab === 'tools' }]" @click="activeTab = 'tools'">Tools</button>
         <button :class="['tab', { active: activeTab === 'qa' }]" @click="activeTab = 'qa'">QA &amp; Testing</button>
       </div>
+
       <div class="skills-grid">
         <div class="skill-card" v-for="(skill, i) in displayedSkills" :key="skill.name"
           :style="{ transitionDelay: (i * 70) + 'ms' }">
@@ -52,7 +55,6 @@ const tools = [
   { icon: 'trello.png', name: 'Trello' },
   { icon: 'androidstudio.png', name: 'Android Studio' },
 ]
-// Skill QA. Ikon dibuat otomatis dari inisial kalau file icon-nya belum ada.
 const qaSkills = [
   { icon: 'katalon.png', name: 'Katalon Studio' },
   { icon: 'playwright.png', name: 'Playwright' },
@@ -126,65 +128,53 @@ watch(activeTab, async () => {
 </script>
 <style scoped>
 .skills-section {
-  padding: 4rem 2rem;
+  padding: 5rem 0;
+  background: var(--blk-2);
+  border-top: 1px solid var(--line);
 }
 
-.section-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-  position: relative;
-  z-index: 2;
+.skills-section {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 480ms ease, transform 480ms cubic-bezier(.2, .9, .3, 1);
 }
 
-.section-title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #f3f4f6;
-  text-align: center;
-  margin-bottom: 1rem;
-  background: linear-gradient(135deg, #f3f4f6, #9ca3af);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.section-subtitle {
-  text-align: center;
-  color: #9ca3af;
-  font-size: 1.1rem;
-  margin-bottom: 3rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+.skills-section.is-mounted {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .tab-menu {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1.5rem;
 }
 
 .tab {
-  padding: 0.5rem 1.5rem;
-  border-radius: 6px;
-  border: 1px solid #333;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.25rem;
+  border: 1px solid var(--line);
   background: transparent;
-  color: #aaa;
-  font-weight: 600;
+  color: var(--gray);
   cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.tab.active {
-  background: #1a1a1a;
-  border-color: #123458;
-  color: #fff;
+  transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.2s;
 }
 
 .tab:hover {
-  border-color: #123458;
-  color: #fff;
+  border-color: var(--gray-dim);
+  color: var(--cream);
+}
+
+.tab.active {
+  background: var(--blk-3);
+  border-color: var(--gold);
+  color: var(--gold);
 }
 
 .skills-grid {
@@ -194,47 +184,20 @@ watch(activeTab, async () => {
 }
 
 .skill-card {
-  background: #111;
-  border: 1px solid #222;
-  border-radius: 8px;
-  padding: 1.5rem 1rem;
+  background: var(--blk-3);
+  border: 1px solid var(--line);
+  padding: 1.75rem 1rem;
   text-align: center;
-  transition: all 0.3s ease;
   cursor: pointer;
+  transform: translateY(22px) scale(0.98);
+  opacity: 0;
+  transition: transform 480ms cubic-bezier(.2, .9, .3, 1), opacity 480ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
 
 .skill-card:hover {
-  border-color: #123458;
-  transform: translateY(-6px);
-  box-shadow: 0 8px 20px rgba(18, 52, 88, 0.2);
-}
-
-.skills-section {
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 420ms ease, transform 420ms ease;
-}
-
-.skills-section.is-mounted {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.section-title {
-  transform: translateY(8px);
-  opacity: 0;
-  transition: transform 420ms cubic-bezier(.2, .9, .3, 1), opacity 420ms ease;
-}
-
-.skills-section.is-mounted .section-title {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.skill-card {
-  transform: translateY(22px) scale(0.98);
-  opacity: 0;
-  transition: transform 420ms cubic-bezier(.2, .9, .3, 1), opacity 420ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
 }
 
 .skills-section.is-mounted .skill-card {
@@ -246,67 +209,80 @@ watch(activeTab, async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 2.5rem;
-  margin-bottom: 0.5rem;
+  height: 2.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .skill-icon img {
-  width: 2rem;
-  height: 2rem;
+  width: 2.25rem;
+  height: 2.25rem;
   object-fit: contain;
   display: block;
 }
 
-/* Ikon cadangan: inisial skill, dipakai kalau file icon-nya belum ada */
 .skill-mono {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 2.25rem;
   height: 2.25rem;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #123458, #1e4a7a);
-  color: #fff;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  border: 1px solid var(--line);
+  background: var(--blk);
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
 }
 
 .skill-name {
-  color: #ddd;
-  font-weight: 600;
-  font-size: 1rem;
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
 }
 
 @media (max-width: 768px) {
   .skills-section {
-    padding: 2rem 1rem;
-  }
-
-  .section-title {
-    font-size: 2rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .section-subtitle {
-    font-size: 0.9rem;
-    margin-bottom: 2rem;
+    padding: 3rem 0;
   }
 
   .tab-menu {
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    gap: 0.4rem;
+    margin-bottom: 2rem;
   }
 
   .tab {
-    padding: 0.4rem 1rem;
-    font-size: 0.85rem;
+    font-size: 0.7rem;
+    padding: 0.45rem 0.9rem;
   }
 
   .skills-grid {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     gap: 0.75rem;
+  }
+
+  .skill-card {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .skill-icon {
+    height: 2.25rem;
+  }
+
+  .skill-icon img {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .skill-name {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .skills-grid {
+    grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+    gap: 0.5rem;
   }
 
   .skill-card {
@@ -315,7 +291,6 @@ watch(activeTab, async () => {
 
   .skill-icon {
     height: 2rem;
-    margin-bottom: 0.4rem;
   }
 
   .skill-icon img {
@@ -324,36 +299,7 @@ watch(activeTab, async () => {
   }
 
   .skill-name {
-    font-size: 0.8rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .section-title {
-    font-size: 1.8rem;
-  }
-
-  .skills-grid {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 0.5rem;
-  }
-
-  .skill-card {
-    padding: 0.8rem 0.4rem;
-  }
-
-  .skill-icon {
-    height: 1.8rem;
-    margin-bottom: 0.3rem;
-  }
-
-  .skill-icon img {
-    width: 1.3rem;
-    height: 1.3rem;
-  }
-
-  .skill-name {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
   }
 }
 </style>

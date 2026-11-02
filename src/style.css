@@ -1,5 +1,33 @@
 @import "tailwindcss";
 
+:root {
+  /* Streetwear editorial palette */
+  --blk: #0a0a0a;
+  --blk-2: #111111;
+  --blk-3: #1a1a1a;
+  --blk-4: #242424;
+  --line: #2a2a2a;
+  --cream: #f2efe9;
+  --cream-dim: #d6d2c8;
+  --gray: #a8a49b;
+  --gray-dim: #706c63;
+  --gold: #c8a24b;
+
+  --font-display: 'Anton', sans-serif;
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  font-family: var(--font-body);
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--cream);
+  background-color: var(--blk);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -9,29 +37,14 @@ html {
   height: auto;
 }
 
-:root {
-  font-family: 'Raleway', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  --font-inter: "Raleway", sans-serif;
-  --font-raleway: "Raleway", sans-serif;
-  --font-satoshi: "Raleway", sans-serif;
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 body {
   margin: 0;
   padding: 0;
   min-width: 320px;
   height: auto;
-  font-family: 'Raleway', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: var(--blk);
+  color: var(--cream);
+  font-family: var(--font-body);
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -42,88 +55,151 @@ video {
   object-fit: cover;
 }
 
-.font-raleway {
-  font-family: var(--font-raleway);
-}
-
-.font-inter {
-  font-family: var(--font-inter);
-}
-
-.font-satoshi {
-  font-family: var(--font-satoshi);
-}
-
 a {
   font-weight: 500;
-  color: #646cff;
+  color: inherit;
   text-decoration: inherit;
 }
 
-a:hover {
-  color: #535bf2;
-}
-
 #app {
   width: 100vw;
   min-height: 100vh;
   margin: 0;
   padding: 0;
+  background: var(--blk);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
+/* ---------- Typography utilities ---------- */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 0.95;
+}
 
-  a:hover {
-    color: #747bff;
-  }
+.font-body {
+  font-family: var(--font-body);
+}
 
-  button {
-    background-color: #f9f9f9;
-  }
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Section header: mono label + giant display title */
+.section-head {
+  margin-bottom: 3rem;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.section-label::before {
+  content: "";
+  width: 2.25rem;
+  height: 1px;
+  background: var(--gold);
+}
+
+.section-title-sw {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 8vw, 6rem);
+  text-transform: uppercase;
+  line-height: 0.95;
+  color: var(--cream);
+  margin: 0;
+}
+
+.section-sub-sw {
+  color: var(--gray);
+  font-size: 1.05rem;
+  margin-top: 0.75rem;
+  max-width: 560px;
+}
+
+/* Marquee ticker */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee {
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 0.75rem 0;
+  user-select: none;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 2.5rem;
+  padding-right: 2.5rem;
+  animation: marquee 28s linear infinite;
+}
+
+.marquee-item {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--cream-dim);
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.marquee-item::after {
+  content: "\2726";
+  color: var(--gold);
+  font-size: 0.8rem;
+}
+
+/* CTA / outline button */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid var(--line);
+  padding: 0.85rem 1.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream);
+  transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.btn-outline:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+/* Page wrapper */
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  width: 100%;
 }
 
 @media (max-width: 768px) {
-  html {
-    font-size: 14px;
-  }
-
-  body {
-    font-size: 0.9rem;
-  }
+  .wrap { padding: 0 1rem; }
+  .section-head { margin-bottom: 2rem; }
 }
 
-@media (max-width: 480px) {
-  html {
-    font-size: 13px;
-  }
-
-  body {
-    font-size: 0.85rem;
-  }
-}
-
-#app {
-  width: 100vw;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
-  }
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
 }

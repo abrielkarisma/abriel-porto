@@ -1,12 +1,17 @@
 <template>
-  <section id="outside" class="section outside-section" :class="{ 'is-mounted': mounted }" ref="sectionRef">
+  <section id="outside" class="outside-section wrap" :class="{ 'is-mounted': mounted }" ref="sectionRef">
     <div class="section-content">
-      <h2 class="section-title">Experiences</h2>
-      <p class="section-subtitle">Involvement in organizations or personal skill-building programs I participated in</p>
+      <div class="section-head">
+        <span class="section-label">04 — Experiences</span>
+        <h2 class="section-title-sw">Outside Code</h2>
+        <p class="section-sub-sw">Involvement in organizations or personal skill-building programs I participated in</p>
+      </div>
+
       <div class="tab-menu">
         <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
           :class="['tab', { active: activeTab === tab }]">{{ tab }}</button>
       </div>
+
       <div class="tabs-content">
         <transition name="fade">
           <div v-if="activeTab === 'Organization'" class="timeline">
@@ -115,84 +120,74 @@ export default {
 }
 </script>
 <style scoped>
+.outside-section {
+  background: var(--blk-2);
+  padding: 6rem 0;
+}
+
 .section-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
   position: relative;
   z-index: 2;
 }
 
-.section-title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #f3f4f6;
-  text-align: center;
-  margin-bottom: 1rem;
-  background: linear-gradient(135deg, #f3f4f6, #9ca3af);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.section-subtitle {
-  text-align: center;
-  color: #9ca3af;
-  font-size: 1.1rem;
-  margin-bottom: 3rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.section-title,
-.section-subtitle {
-  transform: translateY(-12px);
+/* ---------- Reveal on .is-mounted ---------- */
+.section-label,
+.section-title-sw,
+.section-sub-sw,
+.tab-menu,
+.timeline-item {
   opacity: 0;
-  transition: transform 420ms cubic-bezier(.22, .9, .33, 1), opacity 360ms ease;
+  transform: translateY(16px);
+  transition: opacity 420ms cubic-bezier(.22, .9, .33, 1), transform 420ms cubic-bezier(.22, .9, .33, 1);
 }
 
-.outside-section.is-mounted .section-title {
-  transform: translateY(0);
+.outside-section.is-mounted .section-label,
+.outside-section.is-mounted .section-title-sw,
+.outside-section.is-mounted .section-sub-sw,
+.outside-section.is-mounted .tab-menu,
+.outside-section.is-mounted .timeline-item {
   opacity: 1;
-  transition-delay: 0.12s;
-}
-
-.outside-section.is-mounted .section-subtitle {
   transform: translateY(0);
-  opacity: 1;
-  transition-delay: 0.22s;
 }
 
+.outside-section.is-mounted .section-label { transition-delay: 0.05s; }
+.outside-section.is-mounted .section-title-sw { transition-delay: 0.12s; }
+.outside-section.is-mounted .section-sub-sw { transition-delay: 0.2s; }
+.outside-section.is-mounted .tab-menu { transition-delay: 0.28s; }
+
+/* ---------- Tabs ---------- */
 .tab-menu {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  justify-content: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 3rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--line);
 }
 
 .tab {
-  padding: 0.5rem 1.25rem;
-  border-radius: 6px;
-  border: 1px solid #333;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gray);
   background: transparent;
-  color: #aaa;
-  font-weight: 600;
+  border: 1px solid var(--line);
+  padding: 0.65rem 1.5rem;
   cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.tab.active {
-  background: #1a1a1a;
-  border-color: #123458;
-  color: #fff;
+  transition: border-color 0.25s, color 0.25s, background 0.25s;
 }
 
 .tab:hover {
-  border-color: #123458;
-  color: #fff;
+  border-color: var(--cream-dim);
+  color: var(--cream);
 }
 
+.tab.active {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ---------- Tab transition ---------- */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.4s ease;
@@ -203,9 +198,10 @@ export default {
   opacity: 0;
 }
 
+/* ---------- Timeline ---------- */
 .timeline {
   position: relative;
-  margin: 40px auto;
+  margin: 2.5rem auto;
   padding: 20px 0;
   width: 100%;
   max-width: 1000px;
@@ -217,8 +213,8 @@ export default {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 4px;
-  background: #123458;
+  width: 1px;
+  background: var(--line);
 }
 
 .top-circle,
@@ -226,193 +222,134 @@ export default {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: 18px;
-  height: 18px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: #fff;
-  border: 4px solid #123458;
+  background: var(--blk-2);
+  border: 1px solid var(--gold);
 }
 
-.top-circle {
-  top: 0;
-}
+.top-circle { top: 0; }
 
-.bottom-circle {
-  bottom: 0;
-}
+.bottom-circle { bottom: 0; }
 
 .timeline-item {
   position: relative;
   width: 50%;
-  padding: 20px 10px;
+  padding: 20px 40px;
   box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  opacity: 0;
-  transform: translateY(14px) scale(0.98);
-  transition: opacity 420ms cubic-bezier(.2, .9, .3, 1), transform 420ms cubic-bezier(.2, .9, .3, 1);
 }
 
 .timeline-item.left {
   left: 0;
-  justify-content: flex-end;
   text-align: right;
 }
 
 .timeline-item.right {
   left: 50%;
-  justify-content: flex-start;
+  text-align: left;
 }
 
 .timeline-box {
-  padding: 10px;
-  color: #f3f4f6;
-  max-width: calc(100% - 140px);
+  border: 1px solid var(--line);
+  background: var(--blk-3);
+  padding: 1.5rem;
+  transition: border-color 0.25s;
+}
+
+.timeline-box:hover {
+  border-color: var(--gold);
 }
 
 .timeline-box h3 {
   margin: 0;
-  font-size: 16px;
-  font-weight: bold;
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--cream);
+  letter-spacing: 0.01em;
 }
 
 .timeline-box h4 {
-  margin: 4px 0;
-  font-size: 14px;
-  color: #9ca3af;
+  margin: 0.35rem 0 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
 }
 
 .timeline-box p {
-  font-size: 14px;
   margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--gray);
 }
 
 .year {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-weight: bold;
-  color: #f3f4f6;
-  width: 110px;
-  line-height: 1;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
   white-space: nowrap;
-  overflow: visible;
-  text-align: center;
 }
 
 .timeline-item.left .year {
   left: calc(100% + 12px);
-  text-align: left;
 }
 
 .timeline-item.right .year {
-  left: calc(-110px - 12px);
-  text-align: right;
-}
-
-.connector {
-  display: none;
-}
-
-.outside-section.is-mounted .timeline-item {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+  right: calc(100% + 12px);
 }
 
 @media (max-width: 768px) {
   .outside-section {
-    padding: 1.5rem 1rem;
-  }
-
-  .section-title {
-    font-size: 2rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .section-subtitle {
-    font-size: 0.9rem;
-    margin-bottom: 2rem;
+    padding: 4rem 0;
   }
 
   .tab-menu {
     justify-content: center;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
   }
 
   .tab {
-    padding: 0.4rem 1rem;
-    font-size: 0.85rem;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.72rem;
   }
 
   .timeline {
-    margin: 20px auto;
+    margin: 2rem auto;
     padding: 15px 0;
     max-width: 600px;
   }
 
-  .line {
-    left: 50%;
-    width: 2px;
-  }
-
-  .top-circle,
-  .bottom-circle {
-    left: 50%;
-    width: 12px;
-    height: 12px;
-    border-width: 2px;
-  }
-
   .timeline-item {
-    width: 50%;
-    padding: 15px 8px;
-  }
-
-  .timeline-item.left {
-    left: 0;
-    justify-content: flex-end;
-    text-align: right;
-  }
-
-  .timeline-item.right {
-    left: 50%;
-    justify-content: flex-start;
-    text-align: left;
+    padding: 15px 24px;
   }
 
   .timeline-box {
-    max-width: calc(100% - 80px);
-    padding: 8px;
+    padding: 1.1rem;
   }
 
   .timeline-box h3 {
-    font-size: 0.9rem;
-    margin: 0;
+    font-size: 0.95rem;
   }
 
   .timeline-box h4 {
-    font-size: 0.8rem;
-    margin: 2px 0;
+    font-size: 0.65rem;
   }
 
   .timeline-box p {
-    font-size: 0.7rem;
-    line-height: 1.3;
-    margin: 0;
+    font-size: 0.82rem;
   }
 
   .year {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.7rem;
-    background: #123458;
-    color: white;
-    padding: 0.15rem 0.4rem;
-    border-radius: 3px;
-    width: 70px;
-    text-align: center;
+    font-size: 0.75rem;
   }
 
   .timeline-item.left .year {
@@ -420,45 +357,34 @@ export default {
   }
 
   .timeline-item.right .year {
-    left: calc(-70px - 8px);
+    right: calc(100% + 8px);
   }
 }
 
 @media (max-width: 480px) {
-  .section-title {
-    font-size: 1.8rem;
-  }
-
-  .timeline {
-    max-width: 400px;
+  .outside-section {
+    padding: 3rem 0;
   }
 
   .timeline-item {
-    padding: 12px 6px;
+    padding: 12px 18px;
   }
 
   .timeline-box {
-    max-width: calc(100% - 60px);
-    padding: 6px;
+    padding: 0.9rem;
   }
 
   .timeline-box h3 {
-    font-size: 0.85rem;
-  }
-
-  .timeline-box h4 {
-    font-size: 0.75rem;
+    font-size: 0.88rem;
   }
 
   .timeline-box p {
-    font-size: 0.65rem;
-    line-height: 1.2;
+    font-size: 0.78rem;
   }
 
   .year {
-    font-size: 0.6rem;
-    padding: 0.1rem 0.3rem;
-    width: 60px;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
   }
 
   .timeline-item.left .year {
@@ -466,49 +392,7 @@ export default {
   }
 
   .timeline-item.right .year {
-    left: calc(-60px - 6px);
-  }
-}
-
-@media (max-width: 360px) {
-  .timeline {
-    max-width: 320px;
-  }
-
-  .timeline-item {
-    padding: 10px 4px;
-  }
-
-  .timeline-box {
-    max-width: calc(100% - 50px);
-    padding: 4px;
-  }
-
-  .timeline-box h3 {
-    font-size: 0.8rem;
-  }
-
-  .timeline-box h4 {
-    font-size: 0.7rem;
-  }
-
-  .timeline-box p {
-    font-size: 0.6rem;
-    line-height: 1.1;
-  }
-
-  .year {
-    font-size: 0.55rem;
-    padding: 0.08rem 0.25rem;
-    width: 50px;
-  }
-
-  .timeline-item.left .year {
-    left: calc(100% + 4px);
-  }
-
-  .timeline-item.right .year {
-    left: calc(-50px - 4px);
+    right: calc(100% + 6px);
   }
 }
 </style>

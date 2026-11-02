@@ -1,35 +1,41 @@
 <template>
-  <section id="projects" class="section projects-section" ref="projectsSection">
-    <div class="section-content" :class="{ revealed: inView }">
-      <h2 class="section-title">My Projects</h2>
-      <p class="section-subtitle">Some projects I've worked on with various technologies and interesting challenges</p>
-      <div class="projects-grid" ref="grid">
-        <div class="project-card" v-for="(p, idx) in projects" :key="idx">
-          <div class="project-image">
-            <div class="image-placeholder">
-              <img :src="imageUrl(p.image)" :alt="p.title" />
+  <section id="projects" class="projects-section section" ref="projectsSection">
+    <div class="wrap">
+      <div class="section-content" :class="{ revealed: inView }">
+        <div class="section-head">
+          <p class="section-label">02 — Projects</p>
+          <h2 class="section-title-sw">Selected Work</h2>
+          <p class="section-sub-sw">Projects built with various technologies, tackling real-world challenges</p>
+        </div>
+        <div class="projects-grid" ref="grid">
+          <article class="project-card" v-for="(p, idx) in projects" :key="idx">
+            <div class="project-image">
+              <div class="image-placeholder">
+                <img :src="imageUrl(p.image)" :alt="p.title" />
+              </div>
+              <div class="project-overlay">
+                <router-link :to="`/project/${p.slug}`" class="view-project">View Project</router-link>
+              </div>
             </div>
-            <div class="project-overlay">
-              <router-link :to="`/project/${p.slug}`" class="view-project">View Project</router-link>
+            <div class="project-info">
+              <span class="project-index" v-text="String(idx + 1).padStart(2, '0')"></span>
+              <h3>{{ p.title }}</h3>
+              <p>{{ p.desc }}</p>
+              <div class="project-tags">
+                <span class="tag font-mono" v-for="(t, i) in p.tags" :key="i">{{ t }}</span>
+              </div>
+              <div class="project-links" v-if="p.github">
+                <a :href="p.github" class="project-link font-mono" target="_blank" rel="noopener noreferrer"
+                  :aria-label="`Source code ${p.title} di GitHub`">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path
+                      d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                  </svg>
+                  GitHub
+                </a>
+              </div>
             </div>
-          </div>
-          <div class="project-info">
-            <h3>{{ p.title }}</h3>
-            <p>{{ p.desc }}</p>
-            <div class="project-tags">
-              <span class="tag" v-for="(t, i) in p.tags" :key="i">{{ t }}</span>
-            </div>
-            <div class="project-links" v-if="p.github">
-              <a :href="p.github" class="project-link" target="_blank" rel="noopener noreferrer"
-                :aria-label="`Source code ${p.title} di GitHub`">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path
-                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                </svg>
-                GitHub
-              </a>
-            </div>
-          </div>
+          </article>
         </div>
       </div>
     </div>
@@ -49,6 +55,7 @@ export default {
         // Isi dengan URL repo GitHub kalau publik. Kosong = tombol GitHub disembunyikan.
         { title: 'Refoodbish.', slug: 'refoodbish', desc: 'Refoodbish is a mobile application that connects users to share surplus edible food with others.', tags: ['Kotlin'], image: 'refoodbish.svg', github: '' },
         { title: 'Portofolio Website', slug: 'portfolio-website', desc: 'A personal portfolio website showcasing my introduction, featured projects, technical stack, and professional experiences.', tags: ['Vue.js', 'Javascript', 'Tailwind CSS'], image: 'porto.svg', github: 'https://github.com/abrielkarisma/abriel-porto' },
+        { title: 'Fundy', slug: 'fundy', desc: 'Personal finance web app to manage accounts, categories, transactions, reminders, and income/expense charts.', tags: ['React', 'FastAPI', 'SQLite'], image: 'fundy.png', github: '' },
       ],
     }
   },
@@ -142,46 +149,35 @@ export default {
 </script>
 <style scoped>
 .projects-section {
-  padding: 4rem 2rem;
-  background: #ffffff;
+  background: var(--blk-2);
   position: relative;
   overflow: hidden;
-  /* Optimasi performa */
+  padding: 6rem 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
   contain: layout style paint;
 }
 
+.projects-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(200, 162, 75, 0.06), transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
 .section-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
   position: relative;
   z-index: 2;
 }
 
-.section-title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #f3f4f6;
-  text-align: center;
-  margin-bottom: 1rem;
-  background: linear-gradient(135deg, #f3f4f6, #9ca3af);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.section-subtitle {
-  text-align: center;
-  color: #9ca3af;
-  font-size: 1.1rem;
-  margin-bottom: 3rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.section-title,
-.section-subtitle {
+.section-label,
+.section-title-sw,
+.section-sub-sw {
   transform: translateY(-12px);
   opacity: 0;
   transition: transform 420ms cubic-bezier(.22, .9, .33, 1), opacity 360ms ease;
@@ -203,65 +199,63 @@ export default {
   transition-delay: var(--sd, 0ms);
 }
 
-.section-content.revealed .section-title {
+.section-content.revealed .section-label {
   transform: translateY(0);
   opacity: 1;
-  transition-delay: 0.12s;
+  transition-delay: 0.08s;
 }
 
-.section-content.revealed .section-subtitle {
+.section-content.revealed .section-title-sw {
   transform: translateY(0);
   opacity: 1;
-  transition-delay: 0.22s;
+  transition-delay: 0.16s;
+}
+
+.section-content.revealed .section-sub-sw {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: 0.24s;
 }
 
 .projects-grid {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem;
-  /* Optimasi untuk mengurangi layout thrashing */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
   contain: layout;
 }
 
 .project-card {
-  background: rgba(31, 41, 55, 0.8);
-  border-radius: 16px;
+  background: var(--blk-3);
+  border: 1px solid var(--line);
+  border-radius: 4px;
   overflow: hidden;
-  border: 1px solid rgba(156, 163, 175, 0.2);
-  /* Hanya properti non-transform yang dianimasikan di sini supaya tidak
-     bertabrakan dengan animasi masuk di .projects-grid .project-card */
-  transition: box-shadow 200ms ease, border-color 200ms ease, background 200ms ease;
-  backdrop-filter: blur(10px);
-  /* Optimasi untuk mobile */
+  display: flex;
+  flex-direction: column;
+  transition: border-color 200ms ease, box-shadow 200ms ease, background 200ms ease;
   transform: translateZ(0);
   will-change: transform, opacity;
   backface-visibility: hidden;
 }
 
-.projects-grid .project-card:hover {
-  transform: translateY(-10px);
-  border-color: rgba(18, 52, 88, 0.4);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+.project-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
 .project-image {
   position: relative;
   height: 220px;
-  background: #ffffff;
+  background: var(--blk-4);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
 
-.projects-section .video-background {
-  display: none;
-}
-
 .image-placeholder {
-  color: #9ca3af;
-  opacity: 0.7;
+  color: var(--gray);
+  opacity: 0.85;
   transition: all 0.3s ease;
   width: 100%;
   height: 100%;
@@ -278,16 +272,13 @@ export default {
 
 .project-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  inset: 0;
+  background: rgba(10, 10, 10, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .project-card:hover .project-overlay {
@@ -295,12 +286,13 @@ export default {
 }
 
 .view-project {
-  background: linear-gradient(135deg, #123458, #123458);
-  color: white;
-  border: none;
+  border: 1px solid var(--gold);
+  color: var(--cream);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   padding: 0.8rem 2rem;
-  border-radius: 25px;
-  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
@@ -309,68 +301,91 @@ export default {
 
 .view-project:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(18, 52, 88, 0.3);
+  background: var(--gold);
+  color: var(--blk);
+  box-shadow: 0 10px 20px rgba(200, 162, 75, 0.2);
 }
 
 .project-info {
-  padding: 2rem;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+}
+
+.project-index {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--gray-dim);
 }
 
 .project-info h3 {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #f3f4f6;
-  margin-bottom: 1rem;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin: 0 0 1rem;
+  letter-spacing: 0.02em;
 }
 
 .project-info p {
-  color: #d1d5db;
-  margin-bottom: 1.5rem;
+  color: var(--gray);
+  margin: 0 0 1.5rem;
   line-height: 1.6;
+  font-size: 0.95rem;
 }
 
 .project-tags {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
 }
 
 .tag {
-  background: rgba(18, 52, 88, 0.2);
-  color: #123458;
-  padding: 0.3rem 0.8rem;
-  border-radius: 15px;
-  font-size: 0.85rem;
-  border: 1px solid rgba(18, 52, 88, 0.3);
+  color: var(--cream-dim);
+  padding: 0.3rem 0.75rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--line);
 }
 
 .project-links {
   display: flex;
-  gap: 1rem;
+  margin-top: auto;
 }
 
 .project-link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: #9ca3af;
+  color: var(--gray);
   text-decoration: none;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
 }
 
 .project-link:hover {
-  color: #123458;
+  color: var(--gold);
 }
 
 @media (max-width: 768px) {
-  .projects-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+  .projects-section {
+    padding: 3.5rem 0;
   }
 
-  .section-title {
-    font-size: 2.5rem;
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 
   .project-info {
@@ -382,71 +397,53 @@ export default {
     gap: 0.5rem;
   }
 
-  /* Disable complex animations on mobile */
   .project-card {
     transform: none !important;
-    transition: opacity 0.3s ease, box-shadow 0.3s ease !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
     will-change: auto;
   }
 
   .project-card:hover {
     transform: none !important;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
 
-  /* Simplified reveal animation for mobile */
   .projects-grid.is-pre .project-card {
     opacity: 0;
     transform: translateY(20px);
     transition: transform 0.4s ease, opacity 0.4s ease;
   }
-
-  /* Reduce backdrop-filter on mobile for better performance */
-  .project-card {
-    backdrop-filter: none;
-    background: rgba(31, 41, 55, 0.95);
-  }
 }
 
 @media (max-width: 480px) {
   .projects-section {
-    padding: 2rem 1rem;
-  }
-
-  .section-title {
-    font-size: 2rem;
-  }
-
-  .project-info {
-    padding: 1rem;
-  }
-
-  /* Further optimizations for very small screens */
-  .project-card {
-    background: rgba(31, 41, 55, 1);
+    padding: 2.5rem 0;
   }
 
   .project-image {
     height: 180px;
   }
+
+  .project-info {
+    padding: 1.25rem;
+  }
 }
 
-/* Respect user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
-
   .project-card,
   .projects-grid .project-card,
   .projects-grid.is-pre .project-card,
-  .section-title,
-  .section-subtitle {
+  .section-label,
+  .section-title-sw,
+  .section-sub-sw {
     transition: none !important;
     transform: none !important;
     animation: none !important;
   }
 
   .projects-grid.is-pre .project-card,
-  .section-content.revealed .section-title,
-  .section-content.revealed .section-subtitle {
+  .section-content.revealed .section-label,
+  .section-content.revealed .section-title-sw,
+  .section-content.revealed .section-sub-sw {
     transform: none !important;
     opacity: 1;
   }
