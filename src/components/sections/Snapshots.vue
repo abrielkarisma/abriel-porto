@@ -412,14 +412,16 @@ onUnmounted(() => {
   grid-template-columns: 1fr minmax(200px, 280px);
   gap: 2rem;
   align-items: center;
+  margin-block: 2.5rem;
 }
 
 .tube3d-stage {
   position: relative;
-  height: clamp(280px, 40vw, 400px);
+  height: clamp(320px, 46vw, 440px);
   perspective: 1400px;
   cursor: grab;
   touch-action: pan-y;
+  padding-block: 1.5rem;
 }
 
 .tube3d-stage:active {
@@ -588,8 +590,8 @@ onUnmounted(() => {
 
 .dot-deco {
   position: relative;
-  width: 128px;
-  height: 128px;
+  width: 116px;
+  height: 116px;
   border: 1px solid var(--line);
   border-radius: 50%;
   margin-top: 0.25rem;
@@ -597,8 +599,8 @@ onUnmounted(() => {
 
 .dot {
   position: absolute;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   border: none;
   padding: 0;
@@ -615,7 +617,7 @@ onUnmounted(() => {
 
 .dot.active {
   background: var(--gold);
-  transform: translate(-50%, -50%) scale(1.5);
+  transform: translate(-50%, -50%) scale(1.6);
 }
 
 .lightbox {
