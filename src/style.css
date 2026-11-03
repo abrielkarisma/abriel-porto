@@ -13,6 +13,12 @@
   --gray-dim: #706c63;
   --gold: #c8a24b;
 
+  /* Semantic surfaces (adapt to theme) */
+  --nav-bg: rgba(10, 10, 10, 0.86);
+  --overlay-bg: rgba(10, 10, 10, 0.85);
+
+  color-scheme: dark;
+
   --font-display: 'Anton', sans-serif;
   --font-body: 'Space Grotesk', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -26,6 +32,25 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Light theme */
+:root[data-theme="light"] {
+  --blk: #f4f1ea;
+  --blk-2: #ece8df;
+  --blk-3: #e4dfd4;
+  --blk-4: #d8d2c5;
+  --line: #d3ccbd;
+  --cream: #14120e;
+  --cream-dim: #403a30;
+  --gray: #5b564c;
+  --gray-dim: #837d6f;
+  --gold: #8f6a1f;
+
+  --nav-bg: rgba(244, 241, 234, 0.88);
+  --overlay-bg: rgba(244, 241, 234, 0.92);
+
+  color-scheme: light;
 }
 
 * {

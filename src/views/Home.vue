@@ -47,6 +47,13 @@ const navigateToPortfolio = () => {
   overflow: hidden;
   cursor: pointer;
   background: var(--blk);
+  /* Landing cinematic selalu gelap, apa pun tema global */
+  --blk: #0a0a0a;
+  --cream: #f2efe9;
+  --cream-dim: #d6d2c8;
+  --gray: #a8a49b;
+  --line: #2a2a2a;
+  --gold: #c8a24b;
 }
 
 .video-background {

@@ -273,7 +273,7 @@ export default {
 .project-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(10, 10, 10, 0.85);
+  background: var(--overlay-bg);
   display: flex;
   align-items: center;
   justify-content: center;

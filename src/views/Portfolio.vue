@@ -16,6 +16,15 @@
           <li><a href="#services">Services</a></li>
           <li><a href="#connect">Contact</a></li>
         </ul>
+        <button
+          class="theme-toggle"
+          type="button"
+          :aria-label="isLight ? 'Aktifkan mode gelap' : 'Aktifkan mode terang'"
+          @click="toggleTheme"
+        >
+          <Sun v-if="isLight" :size="18" stroke-width="1.8" />
+          <Moon v-else :size="18" stroke-width="1.8" />
+        </button>
       </div>
     </nav>
 
@@ -39,6 +48,8 @@
 </template>
 
 <script setup>
+import { Sun, Moon } from "lucide-vue-next"
+import { useTheme } from "../composables/useTheme"
 import AboutMe from "../components/sections/AboutMe.vue"
 import Projects from "../components/sections/Projects.vue"
 import TechStack from "../components/sections/TechStack.vue"
@@ -46,6 +57,9 @@ import OutsideCode from "../components/sections/OutsideCode.vue"
 import Achievement from "../components/sections/Achievement.vue"
 import Snapshots from "../components/sections/Snapshots.vue"
 import Services from "../components/sections/Services.vue"
+
+const { isLight, toggle } = useTheme()
+const toggleTheme = () => toggle()
 </script>
 
 <style scoped>
@@ -62,7 +76,7 @@ import Services from "../components/sections/Services.vue"
   left: 0;
   right: 0;
   z-index: 50;
-  background: rgba(10, 10, 10, 0.86);
+  background: var(--nav-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
 }
@@ -126,6 +140,39 @@ import Services from "../components/sections/Services.vue"
 .nav-menu a:hover {
   color: var(--cream);
   border-color: var(--line);
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--gray);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, transform 0.2s;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+  transform: translateY(-1px);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .theme-toggle {
+    position: absolute;
+    top: 0.6rem;
+    right: 1rem;
+  }
 }
 
 .portfolio-content {
