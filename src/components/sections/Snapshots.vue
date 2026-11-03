@@ -396,14 +396,14 @@ onUnmounted(() => {
 
 .tube3d-layout {
   display: grid;
-  grid-template-columns: 1fr minmax(220px, 300px);
-  gap: 2.5rem;
+  grid-template-columns: 1fr minmax(200px, 280px);
+  gap: 2rem;
   align-items: center;
 }
 
 .tube3d-stage {
   position: relative;
-  height: clamp(360px, 52vw, 520px);
+  height: clamp(280px, 40vw, 400px);
   perspective: 1400px;
   cursor: grab;
   touch-action: pan-y;
@@ -417,7 +417,7 @@ onUnmounted(() => {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: min(500px, 100%);
+  width: min(420px, 100%);
   aspect-ratio: 4 / 3;
   border-radius: 14px;
   overflow: hidden;
@@ -813,21 +813,21 @@ onUnmounted(() => {
 
 @media (max-width: 1024px) {
   .tube3d-layout {
-    grid-template-columns: 1fr minmax(190px, 240px);
-    gap: 1.5rem;
+    grid-template-columns: 1fr minmax(170px, 220px);
+    gap: 1.25rem;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .snapshots-section {
     padding: 3.5rem 0;
   }
   .tube3d-layout {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.75rem;
   }
   .tube3d-stage {
-    height: clamp(260px, 70vw, 360px);
+    height: clamp(240px, 68vw, 340px);
   }
   .tube3d-panel {
     border-left: none;
