@@ -20,12 +20,17 @@
             </div>
           </div>
           <aside class="tube3d-panel">
-            <span class="panel-index">0{{ current + 1 }} / 0{{ photos.length }}</span>
-            <h3 ref="panelTitle" class="panel-title">{{ photos[current].title }}</h3>
-            <p ref="panelDesc" class="panel-desc">{{ photos[current].description }}</p>
+            <div class="panel-head">
+              <h3 ref="panelTitle" class="panel-title">{{ photos[current].title }}</h3>
+              <div class="panel-rules" aria-hidden="true">
+                <span class="rule rule-a"></span>
+                <span class="rule rule-b"></span>
+                <span class="rule rule-c"></span>
+              </div>
+            </div>
             <div class="panel-nav">
-              <button class="carousel-btn panel-up" @click="prev" aria-label="Previous photo">↑</button>
-              <button class="carousel-btn panel-down" @click="next" aria-label="Next photo">↓</button>
+              <button class="nav-btn nav-up" @click="prev" aria-label="Previous photo">↑</button>
+              <button class="nav-btn nav-down" @click="next" aria-label="Next photo">↓</button>
             </div>
           </aside>
         </div>
@@ -253,25 +258,27 @@ const normOffset = (i) => {
 const cardStyle = (i) => {
   const rel = normOffset(i)
   const dist = Math.abs(rel)
-  let y = rel * 48
-  if (dragging.value) y += deltaY.value * 0.05
-  const scale = Math.max(0.34, 1 - dist * 0.16)
-  const rotX = -rel * 8
-  const z = -dist * 240
-  const opacity = dist > 2.6 ? 0 : (1 - dist * 0.34)
+  let y = rel * 72
+  if (dragging.value) y += deltaY.value * 0.06
+  const scale = Math.max(0.35, 1 - dist * 0.16)
+  const rotX = -rel * 3
+  const z = -dist * 80
+  // hanya 5 kartu terlihat: aktif + 2 atas + 2 bawah
+  const visible = dist <= 2
+  const opacity = visible ? (dist === 0 ? 1 : 0.92 - dist * 0.12) : 0
+  const filter = rel === 0 ? 'brightness(1.12) contrast(1.06)' : 'grayscale(1) brightness(1.25) contrast(0.9)'
   return {
     transform: `translate(-50%, calc(-50% + ${y}px)) scale(${scale}) rotateX(${rotX}deg) translateZ(${z}px)`,
     opacity,
-    zIndex: 120 - dist,
+    filter,
+    zIndex: 100 - dist,
   }
 }
 
 const animatePanel = () => {
   const t = panelTitle.value
-  const d = panelDesc.value
-  if (!t || !d) return
-  gsap.fromTo(t, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' })
-  gsap.fromTo(d, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.55, delay: 0.08, ease: 'power3.out' })
+  if (!t) return
+  gsap.fromTo(t, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' })
 }
 
 const next = () => {
@@ -315,7 +322,6 @@ const stopAutoPlay = () => {
 const lightboxOpen = ref(false)
 const currentPhotoIndex = ref(0)
 const panelTitle = ref(null)
-const panelDesc = ref(null)
 const openLightbox = (index) => {
   currentPhotoIndex.value = index
   lightboxOpen.value = true
@@ -397,7 +403,7 @@ onUnmounted(() => {
 
 .tube3d-stage {
   position: relative;
-  height: clamp(320px, 44vw, 460px);
+  height: clamp(360px, 52vw, 520px);
   perspective: 1400px;
   cursor: grab;
   touch-action: pan-y;
@@ -411,10 +417,14 @@ onUnmounted(() => {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: min(560px, 100%);
+  width: min(500px, 100%);
   aspect-ratio: 4 / 3;
-  will-change: transform, opacity;
-  transition: transform 0.6s cubic-bezier(0.22, 0.9, 0.33, 1), opacity 0.45s ease;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  will-change: transform, opacity, filter;
+  transition: transform 0.6s cubic-bezier(0.22, 0.9, 0.33, 1), opacity 0.45s ease, filter 0.45s ease;
   cursor: pointer;
 }
 
@@ -448,36 +458,87 @@ onUnmounted(() => {
 .tube3d-panel {
   border-left: 1px solid var(--line);
   padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.panel-index {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  color: var(--gold);
-  display: block;
-  margin-bottom: 0.75rem;
+.panel-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .panel-title {
-  margin: 0 0 0.75rem;
+  margin: 0;
   font-family: var(--font-display);
   font-size: clamp(1.3rem, 2.4vw, 1.8rem);
   text-transform: uppercase;
   line-height: 1.05;
-  color: var(--cream);
+  color: var(--gold);
 }
 
-.panel-desc {
-  margin: 0 0 1.5rem;
-  color: var(--gray);
-  font-size: 0.92rem;
-  line-height: 1.6;
+.panel-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.panel-rules .rule {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+}
+
+.panel-rules .rule-a {
+  width: 100%;
+  background: var(--gold);
+  opacity: 0.9;
+}
+
+.panel-rules .rule-b {
+  width: 72%;
+  background: var(--gold);
+  opacity: 0.45;
+}
+
+.panel-rules .rule-c {
+  width: 44%;
+  background: var(--gold);
+  opacity: 0.25;
 }
 
 .panel-nav {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.6rem;
+}
+
+.nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--cream-dim);
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.25s, color 0.25s, background 0.25s, transform 0.25s;
+}
+
+.nav-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--blk-3);
+  transform: translateY(-2px);
+}
+
+.nav-btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }
 
 .carousel-btn {
@@ -777,10 +838,10 @@ onUnmounted(() => {
   .panel-nav {
     justify-content: flex-start;
   }
-  .carousel-btn {
-    width: 38px;
-    height: 38px;
-    font-size: 1.3rem;
+  .nav-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
   }
   .contact-section {
     margin-top: 4rem;
@@ -793,10 +854,10 @@ onUnmounted(() => {
 }
 
 @media (max-width: 480px) {
-  .carousel-btn {
-    width: 34px;
-    height: 34px;
-    font-size: 1.1rem;
+  .nav-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
   }
   .lightbox-nav {
     width: 40px;
