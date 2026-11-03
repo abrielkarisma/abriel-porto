@@ -311,7 +311,7 @@ const onPointerUp = () => {
   deltaY.value = 0
 }
 const startAutoPlay = () => {
-  if (autoPlay.value) autoPlayInterval = setInterval(() => { next() }, 4000)
+  if (autoPlay.value) autoPlayInterval = setInterval(() => { next() }, 7000)
 }
 const stopAutoPlay = () => {
   if (autoPlayInterval) {
