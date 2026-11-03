@@ -20,6 +20,10 @@
             </div>
           </div>
           <aside class="tube3d-panel">
+            <div class="panel-nav">
+              <button class="nav-btn nav-up" @click="prev" aria-label="Previous photo">↑</button>
+              <button class="nav-btn nav-down" @click="next" aria-label="Next photo">↓</button>
+            </div>
             <div class="panel-head">
               <h3 ref="panelTitle" class="panel-title">{{ photos[current].title }}</h3>
               <div class="panel-rules" aria-hidden="true">
@@ -27,16 +31,13 @@
                 <span class="rule rule-b"></span>
                 <span class="rule rule-c"></span>
               </div>
-            </div>
-            <div class="panel-nav">
-              <button class="nav-btn nav-up" @click="prev" aria-label="Previous photo">↑</button>
-              <button class="nav-btn nav-down" @click="next" aria-label="Next photo">↓</button>
+              <div class="dot-deco">
+                <button v-for="(photo, index) in photos" :key="index" class="dot"
+                  :class="{ active: index === current }" :style="dotStyle(index)"
+                  :aria-label="`Go to ${photo.title}`" @click="goTo(index)"></button>
+              </div>
             </div>
           </aside>
-        </div>
-        <div class="carousel-indicators">
-          <button v-for="(photo, index) in photos" :key="index" class="indicator"
-            :class="{ active: index === current }" :aria-label="`Go to slide ${index + 1}`" @click="goTo(index)"></button>
         </div>
       </div>
 
@@ -258,21 +259,33 @@ const normOffset = (i) => {
 const cardStyle = (i) => {
   const rel = normOffset(i)
   const dist = Math.abs(rel)
-  let y = rel * 72
+  let y = rel * 92
   if (dragging.value) y += deltaY.value * 0.06
-  const scale = Math.max(0.35, 1 - dist * 0.16)
+  const scale = Math.max(0.32, 1 - dist * 0.145)
   const rotX = -rel * 3
-  const z = -dist * 80
+  const z = -dist * 70
   // hanya 5 kartu terlihat: aktif + 2 atas + 2 bawah
   const visible = dist <= 2
-  const opacity = visible ? (dist === 0 ? 1 : 0.92 - dist * 0.12) : 0
-  const filter = rel === 0 ? 'brightness(1.12) contrast(1.06)' : 'grayscale(1) brightness(1.25) contrast(0.9)'
+  const opacity = visible ? (dist === 0 ? 1 : 0.9 - dist * 0.1) : 0
+  const filter = rel === 0 ? 'brightness(1.12) contrast(1.06)' : 'grayscale(1) brightness(1.3) contrast(0.9)'
   return {
     transform: `translate(-50%, calc(-50% + ${y}px)) scale(${scale}) rotateX(${rotX}deg) translateZ(${z}px)`,
     opacity,
     filter,
     zIndex: 100 - dist,
   }
+}
+
+// Posisi titik random di dalam lingkaran dekoratif (persen dari lingkaran)
+const DOT_POS = [
+  { x: 50, y: 16 }, { x: 72, y: 26 }, { x: 63, y: 44 }, { x: 82, y: 56 },
+  { x: 68, y: 72 }, { x: 48, y: 82 }, { x: 30, y: 74 }, { x: 18, y: 58 },
+  { x: 22, y: 40 }, { x: 38, y: 24 }, { x: 46, y: 58 }, { x: 58, y: 34 },
+  { x: 34, y: 50 }, { x: 64, y: 56 },
+]
+const dotStyle = (i) => {
+  const p = DOT_POS[i % DOT_POS.length]
+  return { left: `${p.x}%`, top: `${p.y}%` }
 }
 
 const animatePanel = () => {
@@ -573,26 +586,36 @@ onUnmounted(() => {
   line-height: 1;
 }
 
-.carousel-indicators {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1.75rem;
+.dot-deco {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  margin-top: 0.25rem;
 }
 
-.indicator {
-  width: 24px;
-  height: 3px;
+.dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
   border: none;
+  padding: 0;
   background: var(--blk-4);
+  transform: translate(-50%, -50%);
   cursor: pointer;
-  transition: background 0.3s, width 0.3s;
+  transition: background 0.3s, transform 0.3s;
 }
 
-.indicator.active {
+.dot:hover {
   background: var(--gold);
-  width: 36px;
+  opacity: 0.7;
+}
+
+.dot.active {
+  background: var(--gold);
+  transform: translate(-50%, -50%) scale(1.5);
 }
 
 .lightbox {
