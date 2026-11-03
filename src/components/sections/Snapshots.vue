@@ -8,32 +8,30 @@
       </div>
 
       <div class="carousel-container" :class="{ revealed: inView }">
-        <div class="carousel-wrapper">
-          <button class="carousel-btn carousel-prev" aria-label="Previous slides" @click="prevSlide" :disabled="currentSlide === 0">
-            <i class="arrow-left">‹</i>
-          </button>
-          <div class="carousel-viewport">
-            <div class="carousel-track" :style="{ transform: `translateX(-${currentSlide * slideWidth}%)` }">
-              <div v-for="(photo, index) in photos" :key="index" class="carousel-slide" @click="openLightbox(index)">
-                <div class="slide-image-container">
-                  <img :src="photo.src" :alt="photo.alt" class="slide-image" loading="lazy" />
-                  <div class="slide-overlay">
-                    <div class="slide-overlay-content">
-                      <span class="slide-overlay-index">0{{ index + 1 }}</span>
-                      <h3 class="slide-overlay-title">{{ photo.title }}</h3>
-                    </div>
-                  </div>
-                </div>
+        <div class="tube3d-layout">
+          <div class="tube3d-stage" ref="stage"
+            @pointerdown.prevent="onPointerDown" @pointermove.prevent="onPointerMove"
+            @pointerup.prevent="onPointerUp" @pointercancel.prevent="onPointerUp" @pointerleave.prevent="onPointerUp">
+            <div v-for="(photo, index) in photos" :key="index" class="tube3d-card"
+              :style="cardStyle(index)" :data-index="index" @click="openLightbox(index)">
+              <div class="slide-image-container">
+                <img :src="photo.src" :alt="photo.alt" class="slide-image" loading="lazy" />
               </div>
             </div>
           </div>
-          <button class="carousel-btn carousel-next" aria-label="Next slides" @click="nextSlide" :disabled="currentSlide >= maxSlide">
-            <i class="arrow-right">›</i>
-          </button>
+          <aside class="tube3d-panel">
+            <span class="panel-index">0{{ current + 1 }} / 0{{ photos.length }}</span>
+            <h3 ref="panelTitle" class="panel-title">{{ photos[current].title }}</h3>
+            <p ref="panelDesc" class="panel-desc">{{ photos[current].description }}</p>
+            <div class="panel-nav">
+              <button class="carousel-btn panel-up" @click="prev" aria-label="Previous photo">↑</button>
+              <button class="carousel-btn panel-down" @click="next" aria-label="Next photo">↓</button>
+            </div>
+          </aside>
         </div>
         <div class="carousel-indicators">
           <button v-for="(photo, index) in photos" :key="index" class="indicator"
-            :class="{ active: isSlideVisible(index) }" :aria-label="`Go to slide ${index + 1}`" @click="goToSlide(index)"></button>
+            :class="{ active: index === current }" :aria-label="`Go to slide ${index + 1}`" @click="goTo(index)"></button>
         </div>
       </div>
 
@@ -133,7 +131,8 @@
   </section>
 </template>
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import gsap from 'gsap'
 const inView = ref(false)
 const snapshotsSection = ref(null)
 import asprakImg from '@/assets/snapshots/asprak.jpg'
@@ -235,66 +234,88 @@ const photos = ref([
     description: 'Add your description here'
   },
 ])
-const currentSlide = ref(0)
-const slidesPerView = ref(4)
-const slideWidth = ref(25)
-const updateSlidesPerView = () => {
-  const width = window.innerWidth
-  if (width < 480) {
-    slidesPerView.value = 1
-    slideWidth.value = 100
-  } else if (width < 768) {
-    slidesPerView.value = 2
-    slideWidth.value = 50
-  } else if (width < 1024) {
-    slidesPerView.value = 3
-    slideWidth.value = 33.333
-  } else {
-    slidesPerView.value = 4
-    slideWidth.value = 25
-  }
-}
-const maxSlide = computed(() => {
-  return Math.max(0, photos.value.length - slidesPerView.value)
-})
-const nextSlide = () => {
-  if (currentSlide.value < maxSlide.value) {
-    currentSlide.value++
-  }
-}
-const prevSlide = () => {
-  if (currentSlide.value > 0) {
-    currentSlide.value--
-  }
-}
-const goToSlide = (index) => {
-  const targetSlide = Math.min(index, maxSlide.value)
-  currentSlide.value = targetSlide
-}
-const isSlideVisible = (index) => {
-  return index >= currentSlide.value && index < currentSlide.value + slidesPerView.value
-}
+const current = ref(0)
+const dragging = ref(false)
+const startY = ref(0)
+const deltaY = ref(0)
 const autoPlay = ref(true)
-const autoPlayInterval = ref(null)
-const startAutoPlay = () => {
-  if (autoPlay.value) {
-    autoPlayInterval.value = setInterval(() => {
-      if (currentSlide.value >= maxSlide.value) {
-        currentSlide.value = 0
-      } else {
-        nextSlide()
-      }
-    }, 4000)
+let autoPlayInterval = null
+
+const normOffset = (i) => {
+  const n = photos.value.length
+  const half = Math.floor(n / 2)
+  let rel = i - current.value
+  if (rel > half) rel -= n
+  if (rel < -half) rel += n
+  return rel
+}
+
+const cardStyle = (i) => {
+  const rel = normOffset(i)
+  const dist = Math.abs(rel)
+  let y = rel * 48
+  if (dragging.value) y += deltaY.value * 0.05
+  const scale = Math.max(0.34, 1 - dist * 0.16)
+  const rotX = -rel * 8
+  const z = -dist * 240
+  const opacity = dist > 2.6 ? 0 : (1 - dist * 0.34)
+  return {
+    transform: `translate(-50%, calc(-50% + ${y}px)) scale(${scale}) rotateX(${rotX}deg) translateZ(${z}px)`,
+    opacity,
+    zIndex: 120 - dist,
   }
+}
+
+const animatePanel = () => {
+  const t = panelTitle.value
+  const d = panelDesc.value
+  if (!t || !d) return
+  gsap.fromTo(t, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' })
+  gsap.fromTo(d, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.55, delay: 0.08, ease: 'power3.out' })
+}
+
+const next = () => {
+  current.value = (current.value + 1) % photos.value.length
+  animatePanel()
+}
+const prev = () => {
+  current.value = (current.value - 1 + photos.value.length) % photos.value.length
+  animatePanel()
+}
+const goTo = (index) => {
+  current.value = index
+  animatePanel()
+}
+
+const onPointerDown = (e) => {
+  dragging.value = true
+  startY.value = e.clientY
+  deltaY.value = 0
+}
+const onPointerMove = (e) => {
+  if (!dragging.value) return
+  deltaY.value = e.clientY - startY.value
+}
+const onPointerUp = () => {
+  if (!dragging.value) return
+  dragging.value = false
+  if (deltaY.value < -60) next()
+  else if (deltaY.value > 60) prev()
+  deltaY.value = 0
+}
+const startAutoPlay = () => {
+  if (autoPlay.value) autoPlayInterval = setInterval(() => { next() }, 4000)
 }
 const stopAutoPlay = () => {
-  if (autoPlayInterval.value) {
-    clearInterval(autoPlayInterval.value)
-    autoPlayInterval.value = null
+  if (autoPlayInterval) {
+    clearInterval(autoPlayInterval)
+    autoPlayInterval = null
   }
 }
 const lightboxOpen = ref(false)
 const currentPhotoIndex = ref(0)
+const panelTitle = ref(null)
+const panelDesc = ref(null)
 const openLightbox = (index) => {
   currentPhotoIndex.value = index
   lightboxOpen.value = true
@@ -324,8 +345,6 @@ const handleKeydown = (event) => {
 }
 onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
-  updateSlidesPerView()
-  window.addEventListener('resize', updateSlidesPerView)
   startAutoPlay()
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -340,7 +359,6 @@ onMounted(() => {
 })
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
-  window.removeEventListener('resize', updateSlidesPerView)
   stopAutoPlay()
 })
 </script>
@@ -370,32 +388,34 @@ onUnmounted(() => {
   margin-top: 3.5rem;
 }
 
-.carousel-wrapper {
-  position: relative;
-  display: flex;
+.tube3d-layout {
+  display: grid;
+  grid-template-columns: 1fr minmax(220px, 300px);
+  gap: 2.5rem;
   align-items: center;
-  gap: 1rem;
-  border: 1px solid var(--line);
-  background: var(--blk-2);
-  padding: 1.5rem;
 }
 
-.carousel-viewport {
-  flex: 1;
-  overflow: hidden;
+.tube3d-stage {
+  position: relative;
+  height: clamp(320px, 44vw, 460px);
+  perspective: 1400px;
+  cursor: grab;
+  touch-action: pan-y;
 }
 
-.carousel-track {
-  display: flex;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform;
+.tube3d-stage:active {
+  cursor: grabbing;
 }
 
-.carousel-slide {
-  flex: 0 0 25%;
-  min-width: 0;
+.tube3d-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(560px, 100%);
+  aspect-ratio: 4 / 3;
+  will-change: transform, opacity;
+  transition: transform 0.6s cubic-bezier(0.22, 0.9, 0.33, 1), opacity 0.45s ease;
   cursor: pointer;
-  padding: 0 0.5rem;
 }
 
 .slide-image-container {
@@ -425,48 +445,39 @@ onUnmounted(() => {
   transform: scale(1.06);
 }
 
-.slide-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.35) 100%);
-  display: flex;
-  align-items: flex-end;
-  opacity: 0;
-  transition: opacity 0.4s ease;
+.tube3d-panel {
+  border-left: 1px solid var(--line);
+  padding-left: 2rem;
 }
 
-.slide-image-container:hover .slide-overlay {
-  opacity: 1;
-}
-
-.slide-overlay-content {
-  padding: 1rem;
-  width: 100%;
-  transform: translateY(12px);
-  transition: transform 0.4s ease;
-}
-
-.slide-image-container:hover .slide-overlay-content {
-  transform: translateY(0);
-}
-
-.slide-overlay-index {
+.panel-index {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   letter-spacing: 0.2em;
   color: var(--gold);
   display: block;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.75rem;
 }
 
-.slide-overlay-title {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--cream);
+.panel-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.4vw, 1.8rem);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  line-height: 1.05;
+  color: var(--cream);
+}
+
+.panel-desc {
+  margin: 0 0 1.5rem;
+  color: var(--gray);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.panel-nav {
+  display: flex;
+  gap: 0.75rem;
 }
 
 .carousel-btn {
@@ -740,8 +751,9 @@ onUnmounted(() => {
 }
 
 @media (max-width: 1024px) {
-  .carousel-slide {
-    flex: 0 0 33.333%;
+  .tube3d-layout {
+    grid-template-columns: 1fr minmax(190px, 240px);
+    gap: 1.5rem;
   }
 }
 
@@ -749,12 +761,21 @@ onUnmounted(() => {
   .snapshots-section {
     padding: 3.5rem 0;
   }
-  .carousel-wrapper {
-    padding: 1rem;
-    gap: 0.5rem;
+  .tube3d-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
-  .carousel-slide {
-    flex: 0 0 50%;
+  .tube3d-stage {
+    height: clamp(260px, 70vw, 360px);
+  }
+  .tube3d-panel {
+    border-left: none;
+    border-top: 1px solid var(--line);
+    padding-left: 0;
+    padding-top: 1.25rem;
+  }
+  .panel-nav {
+    justify-content: flex-start;
   }
   .carousel-btn {
     width: 38px;
@@ -772,16 +793,10 @@ onUnmounted(() => {
 }
 
 @media (max-width: 480px) {
-  .carousel-slide {
-    flex: 0 0 100%;
-  }
   .carousel-btn {
     width: 34px;
     height: 34px;
     font-size: 1.1rem;
-  }
-  .slide-overlay-content {
-    padding: 0.85rem;
   }
   .lightbox-nav {
     width: 40px;
