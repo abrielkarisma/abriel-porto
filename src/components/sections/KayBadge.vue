@@ -10,8 +10,8 @@ import { ref, reactive, computed, onMounted, onUnmounted } from "vue"
 const badge = ref(null)
 
 const pos = reactive({
-  x: typeof window !== "undefined" ? window.innerWidth - 120 : 0,
-  y: typeof window !== "undefined" ? 24 : 0,
+  x: 16,
+  y: 72,
   dragging: false,
 })
 
@@ -55,8 +55,8 @@ const onUp = () => {
 }
 
 onMounted(() => {
-  pos.x = window.innerWidth - badge.value.offsetWidth - 24
-  pos.y = 24
+  pos.x = 16
+  pos.y = 72
 })
 
 onUnmounted(() => {
