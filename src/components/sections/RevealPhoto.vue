@@ -7,7 +7,7 @@ const wrapEl = ref(null)
 const fgStyle = ref({ maskImage: 'none', WebkitMaskImage: 'none' })
 
 const MAX_STAMPS = 60
-const BRUSH = 0.26 // ukuran kuas relatif ke sisi terkecil
+const BRUSH = 0.14 // ukuran kuas relatif ke sisi terkecil
 
 function apply() {
   const list = stamps.value
