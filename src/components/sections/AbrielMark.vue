@@ -158,9 +158,9 @@ onUnmounted(() => {
 }
 
 .mark-reveal {
-  position: fixed;
+  position: absolute;
   left: 50%;
-  top: 52%;
+  top: 50%;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(6rem, 24vw, 20rem);
