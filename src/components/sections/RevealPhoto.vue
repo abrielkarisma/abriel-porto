@@ -1,86 +1,57 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
-// PRNG ber-seed → bentuk blob stabil tiap load, tapi acak & organik
-function mulberry32(a) {
-  return function () {
-    a |= 0
-    a = (a + 0x6d2b79f5) | 0
-    let t = Math.imul(a ^ (a >>> 15), 1 | a)
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-  }
-}
-
-const rand = mulberry32(20261104)
-const BLOBS = Array.from({ length: 18 }, () => ({
-  x: 8 + rand() * 84,
-  y: 8 + rand() * 84,
-  r: 14 + rand() * 22, // radius maks dalam %
-}))
-
-const active = ref(false)
-let progress = 0
-let timer = 0
+const stamps = ref([])
+const wrapEl = ref(null)
 
 const fgStyle = ref({ maskImage: 'none', WebkitMaskImage: 'none' })
 
-const DURATION = 650
+const MAX_STAMPS = 60
+const BRUSH = 0.26 // ukuran kuas relatif ke sisi terkecil
 
-function buildMask(p) {
-  return BLOBS.map((b) => {
-    const rr = Math.max(0.5, b.r * p)
-    return `radial-gradient(circle at ${b.x.toFixed(1)}% ${b.y.toFixed(1)}%, #000 0 ${rr.toFixed(1)}%, rgba(0,0,0,0) calc(${rr.toFixed(1)}% + 5%))`
-  }).join(',')
-}
-
-function apply(p) {
-  fgStyle.value = { maskImage: buildMask(p), WebkitMaskImage: buildMask(p) }
-}
-
-const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3)
-
-function step(now) {
-  const t = Math.min(1, (now - start) / DURATION)
-  progress = from + (to - from) * easeOutCubic(t)
-  apply(progress)
-  if (t < 1) {
-    timer = setTimeout(() => step(performance.now()), 16)
+function apply() {
+  const list = stamps.value
+  if (!list.length) {
+    fgStyle.value = { maskImage: 'none', WebkitMaskImage: 'none' }
+    return
   }
+  const parts = list.map((s) => {
+    const rr = s.r
+    return `radial-gradient(circle at ${s.x.toFixed(1)}% ${s.y.toFixed(1)}%, #000 0 ${rr.toFixed(1)}px, rgba(0,0,0,0) calc(${rr.toFixed(1)}px + 9px))`
+  })
+  const mask = parts.join(',')
+  fgStyle.value = { maskImage: mask, WebkitMaskImage: mask }
 }
 
-let from = 0
-let to = 0
-let start = 0
-
-function setActive(v) {
-  active.value = v
-  from = progress
-  to = v ? 1 : 0
-  start = performance.now()
-  clearTimeout(timer)
-  step(start)
+function addStamp(e) {
+  const el = wrapEl.value
+  if (!el) return
+  const rect = el.getBoundingClientRect()
+  const x = ((e.clientX - rect.left) / rect.width) * 100
+  const y = ((e.clientY - rect.top) / rect.height) * 100
+  const r = Math.min(rect.width, rect.height) * BRUSH
+  stamps.value.push({ x, y, r })
+  if (stamps.value.length > MAX_STAMPS) stamps.value.shift()
+  apply()
 }
 
-const prefersReduced =
-  typeof window !== 'undefined' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+function clear() {
+  stamps.value = []
+  apply()
+}
 
-onMounted(() => {
-  progress = 0
-  apply(0)
-})
+onMounted(() => apply())
 
-onUnmounted(() => clearTimeout(timer))
+onUnmounted(clear)
 </script>
 
 <template>
   <div
+    ref="wrapEl"
     class="reveal-wrap"
-    @mouseenter="setActive(true)"
-    @mouseleave="setActive(false)"
+    @pointermove="addStamp"
+    @pointerleave="clear"
     @click.stop.prevent
-    @touchstart.stop.prevent="active ? setActive(false) : setActive(true)"
   >
     <img src="/images/char_rg.png" alt="Abriel karakter" class="rl-base" />
     <img
@@ -89,7 +60,6 @@ onUnmounted(() => clearTimeout(timer))
       class="rl-fg"
       :style="fgStyle"
     />
-    <span class="rl-label">{{ active ? 'foto asli' : 'hover' }}</span>
   </div>
 </template>
 
@@ -105,6 +75,7 @@ onUnmounted(() => clearTimeout(timer))
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
+  touch-action: none;
 }
 
 .rl-base,
@@ -119,24 +90,6 @@ onUnmounted(() => clearTimeout(timer))
 
 .rl-fg {
   will-change: mask-image;
-}
-
-.rl-label {
-  position: absolute;
-  bottom: 0.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--gold);
-  background: rgba(10, 10, 10, 0.45);
-  border: 1px solid var(--line);
-  padding: 0.3rem 0.7rem;
-  backdrop-filter: blur(4px);
-  pointer-events: none;
-  white-space: nowrap;
 }
 
 @media (max-width: 700px) {
