@@ -5,21 +5,42 @@ const stamps = ref([])
 const wrapEl = ref(null)
 
 const MAX_STAMPS = 80
-const BRUSH = 0.10 // radius kuas relatif ke sisi terkecil
+const BRUSH = 0.10 // radius kuas (fraksi sisi, 0..1)
+
+const clipPath = ref('M0 0 L1 0 L1 1 L0 1 Z')
+
+function rebuildClip() {
+  const list = stamps.value
+  if (!list.length) {
+    clipPath.value = 'M0 0 L1 0 L1 1 L0 1 Z'
+    return
+  }
+  const parts = ['M0 0 L1 0 L1 1 L0 1 Z']
+  for (const s of list) {
+    const cx = s.x
+    const cy = s.y
+    const r = BRUSH
+    parts.push(
+      `M${(cx - r).toFixed(4)} ${cy.toFixed(4)} a${r.toFixed(4)} ${r.toFixed(4)} 0 1 0 ${(2 * r).toFixed(4)} 0 a${r.toFixed(4)} ${r.toFixed(4)} 0 1 0 ${(-2 * r).toFixed(4)} 0 Z`
+    )
+  }
+  clipPath.value = parts.join('')
+}
 
 function addStamp(e) {
   const el = wrapEl.value
   if (!el) return
   const rect = el.getBoundingClientRect()
-  const x = ((e.clientX - rect.left) / rect.width) * 100
-  const y = ((e.clientY - rect.top) / rect.height) * 100
-  const r = Math.min(rect.width, rect.height) * BRUSH
-  stamps.value.push({ x, y, r })
+  const x = (e.clientX - rect.left) / rect.width
+  const y = (e.clientY - rect.top) / rect.height
+  stamps.value.push({ x, y })
   if (stamps.value.length > MAX_STAMPS) stamps.value.shift()
+  rebuildClip()
 }
 
 function clear() {
   stamps.value = []
+  rebuildClip()
 }
 
 onUnmounted(clear)
@@ -41,21 +62,17 @@ onUnmounted(clear)
       src="/images/char_rg.png"
       alt="Abriel karakter"
       class="rl-fg"
-      style="mask: url(#brushMask); -webkit-mask: url(#brushMask)"
+      style="clip-path: url(#scratchClip)"
     />
-    <svg class="rl-mask" aria-hidden="true" focusable="false">
+    <svg class="rl-clip" aria-hidden="true" focusable="false">
       <defs>
-        <mask id="brushMask" maskUnits="userSpaceOnUse">
-          <rect width="100%" height="100%" fill="#fff" />
-          <circle
-            v-for="(s, i) in stamps"
-            :key="i"
-            :cx="s.x + '%'"
-            :cy="s.y + '%'"
-            :r="s.r + 'px'"
-            fill="#000"
+        <clipPath id="scratchClip" clipPathUnits="objectBoundingBox">
+          <path
+            :d="clipPath"
+            clip-rule="evenodd"
+            fill-rule="evenodd"
           />
-        </mask>
+        </clipPath>
       </defs>
     </svg>
   </div>
@@ -87,10 +104,10 @@ onUnmounted(clear)
 }
 
 .rl-fg {
-  will-change: mask;
+  will-change: clip-path;
 }
 
-.rl-mask {
+.rl-clip {
   position: absolute;
   inset: 0;
   width: 100%;
