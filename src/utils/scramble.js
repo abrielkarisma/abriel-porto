@@ -6,7 +6,10 @@ const GLYPHS =
   "!<>-_\\/[]{}—=+*^?#________ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
 const SELECTOR =
-  "a, button, label, .nav-menu li, .logo, h1, h2, h3, .section-title, .card-title, .portfolio-btn, .card-cta"
+  "a, button, label, .nav-menu li, .logo, .portfolio-btn, .card-cta"
+
+// section yang dikecualikan dari scramble
+const EXCLUDED = ".services-section"
 
 const DURATION = 620
 
@@ -72,6 +75,7 @@ function init() {
   document.addEventListener("mouseover", (e) => {
     const t = e.target instanceof Element ? e.target.closest(SELECTOR) : null
     if (!t) return
+    if (EXCLUDED && t.closest(EXCLUDED)) return // section yang dikecualikan
     if (t.__currentHover) return
     t.__currentHover = true
     startScramble(t)
