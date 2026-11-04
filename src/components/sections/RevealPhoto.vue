@@ -1,27 +1,11 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onUnmounted } from 'vue'
 
 const stamps = ref([])
 const wrapEl = ref(null)
 
-const fgStyle = ref({ maskImage: 'none', WebkitMaskImage: 'none' })
-
-const MAX_STAMPS = 60
-const BRUSH = 0.14 // ukuran kuas relatif ke sisi terkecil
-
-function apply() {
-  const list = stamps.value
-  if (!list.length) {
-    fgStyle.value = { maskImage: 'none', WebkitMaskImage: 'none' }
-    return
-  }
-  const parts = list.map((s) => {
-    const rr = s.r
-    return `radial-gradient(circle at ${s.x.toFixed(1)}% ${s.y.toFixed(1)}%, #000 0 ${rr.toFixed(1)}px, rgba(0,0,0,0) calc(${rr.toFixed(1)}px + 9px))`
-  })
-  const mask = parts.join(',')
-  fgStyle.value = { maskImage: mask, WebkitMaskImage: mask }
-}
+const MAX_STAMPS = 80
+const BRUSH = 0.10 // radius kuas relatif ke sisi terkecil
 
 function addStamp(e) {
   const el = wrapEl.value
@@ -32,15 +16,11 @@ function addStamp(e) {
   const r = Math.min(rect.width, rect.height) * BRUSH
   stamps.value.push({ x, y, r })
   if (stamps.value.length > MAX_STAMPS) stamps.value.shift()
-  apply()
 }
 
 function clear() {
   stamps.value = []
-  apply()
 }
-
-onMounted(() => apply())
 
 onUnmounted(clear)
 </script>
@@ -53,13 +33,31 @@ onUnmounted(clear)
     @pointerleave="clear"
     @click.stop.prevent
   >
-    <img src="/images/char_rg.png" alt="Abriel karakter" class="rl-base" />
+    <!-- foto asli: selalu di belakang -->
+    <img src="/images/human_rg.png" alt="Abriel" class="rl-base" />
+
+    <!-- karakter: di atas, dikikis lubang bulat pas di-sapu -->
     <img
-      src="/images/human_rg.png"
-      alt="Abriel"
+      src="/images/char_rg.png"
+      alt="Abriel karakter"
       class="rl-fg"
-      :style="fgStyle"
+      style="mask: url(#brushMask); -webkit-mask: url(#brushMask)"
     />
+    <svg class="rl-mask" aria-hidden="true" focusable="false">
+      <defs>
+        <mask id="brushMask" maskUnits="userSpaceOnUse">
+          <rect width="100%" height="100%" fill="#fff" />
+          <circle
+            v-for="(s, i) in stamps"
+            :key="i"
+            :cx="s.x + '%'"
+            :cy="s.y + '%'"
+            :r="s.r + 'px'"
+            fill="#000"
+          />
+        </mask>
+      </defs>
+    </svg>
   </div>
 </template>
 
@@ -89,7 +87,15 @@ onUnmounted(clear)
 }
 
 .rl-fg {
-  will-change: mask-image;
+  will-change: mask;
+}
+
+.rl-mask {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 @media (max-width: 700px) {
