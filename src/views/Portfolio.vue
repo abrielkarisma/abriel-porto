@@ -36,6 +36,7 @@
       <Achievement />
       <Snapshots />
       <Services />
+      <AbrielMark />
     </div>
 
     <footer class="site-footer">
@@ -57,6 +58,7 @@ import OutsideCode from "../components/sections/OutsideCode.vue"
 import Achievement from "../components/sections/Achievement.vue"
 import Snapshots from "../components/sections/Snapshots.vue"
 import Services from "../components/sections/Services.vue"
+import AbrielMark from "../components/sections/AbrielMark.vue"
 
 const { isLight, toggle } = useTheme()
 const toggleTheme = () => toggle()
