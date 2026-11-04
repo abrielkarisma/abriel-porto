@@ -38,13 +38,6 @@
       <Services />
       <AbrielMark />
     </div>
-
-    <footer class="site-footer">
-      <div class="wrap footer-inner">
-        <span class="footer-label">© 2026 Abriel Karisma</span>
-        <span class="footer-label">QA Engineer · Mobile &amp; Web</span>
-      </div>
-    </footer>
   </div>
 </template>
 
@@ -179,29 +172,6 @@ const toggleTheme = () => toggle()
 
 .portfolio-content {
   padding-top: 68px;
-}
-
-/* Footer */
-.site-footer {
-  border-top: 1px solid var(--line);
-  background: var(--blk-2);
-  padding: 1.5rem 0;
-}
-
-.footer-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.footer-label {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gray-dim);
 }
 
 @media (max-width: 900px) {
