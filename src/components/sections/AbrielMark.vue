@@ -76,7 +76,8 @@ onUnmounted(() => {
   letter-spacing: -0.04em;
   line-height: 0.9;
   white-space: nowrap;
-  color: var(--blk-2);
+  color: var(--gray);
+  opacity: 0.5;
   user-select: none;
   pointer-events: none;
   will-change: transform, opacity;
