@@ -2,14 +2,6 @@
   <section ref="root" class="mark" data-ui aria-label="Signature Abriel">
     <div class="mark-reveal">
       <span class="mark-glyph" aria-hidden="true">ABRIEL</span>
-      <div class="mark-body">
-        <h2 class="mark-title">Terima kasih sudah mampir.</h2>
-        <p class="mark-sub">
-          Kalau ada proyek yang perlu diperiksa kualitasnya, kabarin aja —
-          gue selalu siap diajak kolaborasi.
-        </p>
-        <a class="mark-cta" href="mailto:hello@abrielkarisma.dev?subject=Kolaborasi">Mulai obrolan →</a>
-      </div>
     </div>
     <p class="mark-hint" aria-hidden="true">terus gulir untuk membuka</p>
   </section>
@@ -216,45 +208,6 @@ onUnmounted(() => {
   color: var(--blk-2);
   user-select: none;
   pointer-events: none;
-}
-
-.mark-body {
-  position: relative;
-  max-width: 640px;
-}
-
-.mark-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4.4vw, 3.2rem);
-  line-height: 1.04;
-  letter-spacing: -0.02em;
-  margin: 0 0 1rem;
-}
-
-.mark-sub {
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
-  line-height: 1.55;
-  color: var(--cream-dim);
-  margin: 0 0 1.75rem;
-}
-
-.mark-cta {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  letter-spacing: 0.04em;
-  color: var(--gold);
-  border: 1px solid var(--gold);
-  border-radius: 999px;
-  padding: 0.7rem 1.4rem;
-  text-decoration: none;
-  transition: background 0.25s, color 0.25s;
-}
-
-.mark-cta:hover,
-.mark-cta:focus-visible {
-  background: var(--gold);
-  color: var(--blk);
 }
 
 .mark-hint {
