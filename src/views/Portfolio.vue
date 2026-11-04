@@ -37,6 +37,7 @@
       <Snapshots />
       <Services />
     </div>
+    <KayBadge />
   </div>
 </template>
 
@@ -50,6 +51,7 @@ import OutsideCode from "../components/sections/OutsideCode.vue"
 import Achievement from "../components/sections/Achievement.vue"
 import Snapshots from "../components/sections/Snapshots.vue"
 import Services from "../components/sections/Services.vue"
+import KayBadge from "../components/sections/KayBadge.vue"
 
 const { isLight, toggle } = useTheme()
 const toggleTheme = () => toggle()

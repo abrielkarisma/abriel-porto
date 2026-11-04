@@ -1,6 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import backgroundVideo from '@/assets/video/background.mp4'
+import KayBadge from '@/components/sections/KayBadge.vue'
 
 const router = useRouter()
 const navigateToPortfolio = () => {
@@ -36,6 +37,7 @@ const navigateToPortfolio = () => {
         <span class="scroll-bounce">▼</span>
       </div>
     </div>
+    <KayBadge />
   </div>
 </template>
 
