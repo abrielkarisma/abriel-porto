@@ -4,28 +4,8 @@ import { ref, onUnmounted } from 'vue'
 const stamps = ref([])
 const wrapEl = ref(null)
 
-const MAX_STAMPS = 80
-const BRUSH = 0.10 // radius kuas (fraksi sisi, 0..1)
-
-const clipPath = ref('M0 0 L1 0 L1 1 L0 1 Z')
-
-function rebuildClip() {
-  const list = stamps.value
-  if (!list.length) {
-    clipPath.value = 'M0 0 L1 0 L1 1 L0 1 Z'
-    return
-  }
-  const parts = ['M0 0 L1 0 L1 1 L0 1 Z']
-  for (const s of list) {
-    const cx = s.x
-    const cy = s.y
-    const r = BRUSH
-    parts.push(
-      `M${(cx - r).toFixed(4)} ${cy.toFixed(4)} a${r.toFixed(4)} ${r.toFixed(4)} 0 1 0 ${(2 * r).toFixed(4)} 0 a${r.toFixed(4)} ${r.toFixed(4)} 0 1 0 ${(-2 * r).toFixed(4)} 0 Z`
-    )
-  }
-  clipPath.value = parts.join('')
-}
+const MAX_STAMPS = 120
+const BRUSH = 0.12 // radius kuas (fraksi sisi, 0..1)
 
 function addStamp(e) {
   const el = wrapEl.value
@@ -35,12 +15,10 @@ function addStamp(e) {
   const y = (e.clientY - rect.top) / rect.height
   stamps.value.push({ x, y })
   if (stamps.value.length > MAX_STAMPS) stamps.value.shift()
-  rebuildClip()
 }
 
 function clear() {
   stamps.value = []
-  rebuildClip()
 }
 
 onUnmounted(clear)
@@ -57,22 +35,26 @@ onUnmounted(clear)
     <!-- foto asli: selalu di belakang -->
     <img src="/images/human_rg.png" alt="Abriel" class="rl-base" />
 
-    <!-- karakter: di atas, dikikis lubang bulat pas di-sapu -->
+    <!-- karakter: di atas, lubang bulat bersih via mask (hitam = transparan) -->
     <img
       src="/images/char_rg.png"
       alt="Abriel karakter"
       class="rl-fg"
-      style="clip-path: url(#scratchClip)"
+      style="-webkit-mask-image: url(#scratchMask); mask-image: url(#scratchMask)"
     />
     <svg class="rl-clip" aria-hidden="true" focusable="false">
       <defs>
-        <clipPath id="scratchClip" clipPathUnits="objectBoundingBox">
-          <path
-            :d="clipPath"
-            clip-rule="evenodd"
-            fill-rule="evenodd"
+        <mask id="scratchMask" maskContentUnits="objectBoundingBox">
+          <rect x="0" y="0" width="1" height="1" fill="white" />
+          <circle
+            v-for="s in stamps"
+            :key="s.x + '-' + s.y"
+            :cx="s.x"
+            :cy="s.y"
+            :r="BRUSH"
+            fill="black"
           />
-        </clipPath>
+        </mask>
       </defs>
     </svg>
   </div>
@@ -104,7 +86,9 @@ onUnmounted(clear)
 }
 
 .rl-fg {
-  will-change: clip-path;
+  will-change: mask-image;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 .rl-clip {
